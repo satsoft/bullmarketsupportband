@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
     // Get latest daily prices for all cryptocurrencies
     const { data: dailyPrices } = await supabaseAdmin
       .from('daily_prices')
-      .select('cryptocurrency_id, close_price, date')
+      .select('cryptocurrency_id, close_price, date, updated_at, created_at')
       .in('cryptocurrency_id', cryptoIds)
       .order('date', { ascending: false });
 
@@ -304,10 +304,13 @@ export async function GET(request: NextRequest) {
     // Get the most recent price update timestamp from the database
     let lastPriceUpdate = null;
     if (dailyPrices && dailyPrices.length > 0) {
-      const mostRecentPrice = dailyPrices.reduce((latest, current) => 
-        new Date(current.date) > new Date(latest.date) ? current : latest
-      );
-      lastPriceUpdate = mostRecentPrice.date;
+      const mostRecentPrice = dailyPrices.reduce((latest, current) => {
+        // Use updated_at if available, otherwise fall back to created_at, then date
+        const currentTime = current.updated_at || current.created_at || current.date;
+        const latestTime = latest.updated_at || latest.created_at || latest.date;
+        return new Date(currentTime) > new Date(latestTime) ? current : latest;
+      });
+      lastPriceUpdate = mostRecentPrice.updated_at || mostRecentPrice.created_at || mostRecentPrice.date;
     }
 
     return NextResponse.json({
