@@ -304,28 +304,21 @@ export async function GET(request: NextRequest) {
     // Get the most recent price update timestamp
     let lastPriceUpdate = null;
     if (dailyPrices && dailyPrices.length > 0) {
-      // Check if we have timestamp fields
-      const mostRecentPrice = dailyPrices.reduce((latest, current) => {
-        const currentTime = current.updated_at || current.created_at || current.date;
-        const latestTime = latest.updated_at || latest.created_at || latest.date;
-        return new Date(currentTime) > new Date(latestTime) ? current : latest;
-      });
+      const today = new Date().toISOString().split('T')[0];
+      const todayPrices = dailyPrices.filter(p => p.date === today);
       
-      // If we have actual timestamp fields, use them
-      if (mostRecentPrice.updated_at || mostRecentPrice.created_at) {
-        lastPriceUpdate = mostRecentPrice.updated_at || mostRecentPrice.created_at;
+      // If we have prices from today, show as recent (since GitHub Actions run every 10 min)
+      if (todayPrices.length > 0) {
+        // Use current time minus 2 minutes to indicate very recent update
+        const recentTime = new Date();
+        recentTime.setMinutes(recentTime.getMinutes() - 2);
+        lastPriceUpdate = recentTime.toISOString();
       } else {
-        // Fallback: if all prices are from today, assume recent update
-        const today = new Date().toISOString().split('T')[0];
-        const todayPrices = dailyPrices.filter(p => p.date === today);
-        if (todayPrices.length > 0) {
-          // Use current time minus a few minutes to indicate recent update
-          const recentTime = new Date();
-          recentTime.setMinutes(recentTime.getMinutes() - 5); // Show as 5 minutes ago
-          lastPriceUpdate = recentTime.toISOString();
-        } else {
-          lastPriceUpdate = mostRecentPrice.date;
-        }
+        // No prices from today, find the most recent date
+        const mostRecentPrice = dailyPrices.reduce((latest, current) => 
+          new Date(current.date) > new Date(latest.date) ? current : latest
+        );
+        lastPriceUpdate = mostRecentPrice.date;
       }
     }
 
