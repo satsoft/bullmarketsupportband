@@ -80,7 +80,7 @@ export const Dashboard: React.FC = () => {
 
       setTickers(transformedTickers);
       setExcludedTokens(data.metadata.excluded_tokens || []);
-      setLastUpdate(new Date());
+      setLastUpdate(data.metadata.last_updated ? new Date(data.metadata.last_updated) : new Date());
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch data');

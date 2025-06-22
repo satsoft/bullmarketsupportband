@@ -301,6 +301,15 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Get the most recent price update timestamp from the database
+    let lastPriceUpdate = null;
+    if (dailyPrices && dailyPrices.length > 0) {
+      const mostRecentPrice = dailyPrices.reduce((latest, current) => 
+        new Date(current.date) > new Date(latest.date) ? current : latest
+      );
+      lastPriceUpdate = mostRecentPrice.date;
+    }
+
     return NextResponse.json({
       success: true,
       data: finalBmsbData,
@@ -310,7 +319,7 @@ export async function GET(request: NextRequest) {
         complete_bmsb_data: finalBmsbData.length, // All returned tokens now have complete data
         excluded_token_types: ['stablecoins', 'wrapped_tokens', 'liquid_staking_tokens', 'liquid_restaking_tokens', 'cross_chain_tokens', 'synthetic_tokens', 'insufficient_data'],
         excluded_tokens: excludedTokens,
-        last_updated: new Date().toISOString()
+        last_updated: lastPriceUpdate || new Date().toISOString()
       }
     }, {
       headers: {
