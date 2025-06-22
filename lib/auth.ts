@@ -58,7 +58,6 @@ export function checkRateLimit(
   config: RateLimitConfig
 ): { allowed: boolean; remaining: number; resetTime: number } {
   const now = Date.now();
-  const windowStart = now - config.window;
   
   // Clean old entries
   for (const [key, data] of rateLimitStore.entries()) {

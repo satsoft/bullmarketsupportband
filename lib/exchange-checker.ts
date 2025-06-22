@@ -412,7 +412,7 @@ class ExchangeChecker {
     // Extract base symbol from trading pair - handle various formats
     let baseSymbol = tradingPair.toUpperCase();
     // Remove common quote currencies
-    baseSymbol = baseSymbol.replace(/[-\/]?(USD[T]?|BTC|ETH)$/i, '');
+    baseSymbol = baseSymbol.replace(/[-/]?(USD[T]?|BTC|ETH)$/i, '');
     
     
     // Special exchange mappings for specific tokens
@@ -499,10 +499,11 @@ class ExchangeChecker {
         const baseSymbol = tradingPair.split('/')[0];
         return `CRYPTO:${baseSymbol}USD`;
       }
-      default:
+      default: {
         // Use CRYPTO feed as universal fallback instead of Binance
-        const symbol = tradingPair.split(/[-\/]?USD[T]?$/i)[0].toUpperCase();
+        const symbol = tradingPair.split(/[-/]?USD[T]?$/i)[0].toUpperCase();
         return `CRYPTO:${symbol}USD`;
+      }
     }
   }
 
