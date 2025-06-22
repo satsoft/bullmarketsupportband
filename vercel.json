@@ -2,9 +2,6 @@
   "functions": {
     "app/api/**/*.ts": {
       "maxDuration": 60
-    },
-    "scripts/**/*.ts": {
-      "maxDuration": 60
     }
   },
   "headers": [
