@@ -69,3 +69,4 @@ test-*.js
 
 # Development files
 .bolt/
+.vercel
