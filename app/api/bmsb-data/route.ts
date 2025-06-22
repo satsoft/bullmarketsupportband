@@ -301,11 +301,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Since GitHub Actions update prices every 10 minutes, show recent timestamp
-    const recentTime = new Date();
-    recentTime.setMinutes(recentTime.getMinutes() - Math.floor(Math.random() * 8) - 2); // 2-9 minutes ago
-    const lastPriceUpdate = recentTime.toISOString();
-
     return NextResponse.json({
       success: true,
       data: finalBmsbData,
@@ -314,8 +309,7 @@ export async function GET(request: NextRequest) {
         total_cryptocurrencies: finalBmsbData.length,
         complete_bmsb_data: finalBmsbData.length, // All returned tokens now have complete data
         excluded_token_types: ['stablecoins', 'wrapped_tokens', 'liquid_staking_tokens', 'liquid_restaking_tokens', 'cross_chain_tokens', 'synthetic_tokens', 'insufficient_data'],
-        excluded_tokens: excludedTokens,
-        last_updated: lastPriceUpdate || new Date().toISOString()
+        excluded_tokens: excludedTokens
       }
     }, {
       headers: {

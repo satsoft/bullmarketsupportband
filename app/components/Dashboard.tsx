@@ -6,31 +6,12 @@ import { Ticker, BMSBApiResponse } from '../types';
 import { TickerList } from './TickerList';
 import { ExclusionTooltip } from './ExclusionTooltip';
 
-// Helper function to format time ago
-function formatTimeAgo(date: Date): string {
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-  
-  if (diffInSeconds < 60) {
-    return `${diffInSeconds} SEC AGO`;
-  } else if (diffInSeconds < 3600) {
-    const minutes = Math.floor(diffInSeconds / 60);
-    return `${minutes} MIN AGO`;
-  } else if (diffInSeconds < 86400) {
-    const hours = Math.floor(diffInSeconds / 3600);
-    return `${hours} HR AGO`;
-  } else {
-    const days = Math.floor(diffInSeconds / 86400);
-    return `${days} DAY${days > 1 ? 'S' : ''} AGO`;
-  }
-}
 
 export const Dashboard: React.FC = () => {
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [excludedTokens, setExcludedTokens] = useState<Array<{symbol: string; category: string}>>([]);
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   const fetchBMSBData = async () => {
     try {
@@ -80,7 +61,6 @@ export const Dashboard: React.FC = () => {
 
       setTickers(transformedTickers);
       setExcludedTokens(data.metadata.excluded_tokens || []);
-      setLastUpdate(data.metadata.last_updated ? new Date(data.metadata.last_updated) : new Date());
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch data');
@@ -187,14 +167,6 @@ export const Dashboard: React.FC = () => {
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span>SYSTEM OPERATIONAL</span>
                 </div>
-                {lastUpdate && (
-                  <div className="flex items-center space-x-2">
-                    <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>LAST UPDATE: {formatTimeAgo(lastUpdate)}</span>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -282,15 +254,6 @@ export const Dashboard: React.FC = () => {
                 <span>SYSTEM OPERATIONAL</span>
               </div>
               
-              {/* Line 8: LAST UPDATE */}
-              {lastUpdate && (
-                <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
-                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>LAST UPDATE: {formatTimeAgo(lastUpdate)}</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
