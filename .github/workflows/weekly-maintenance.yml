@@ -31,7 +31,7 @@ jobs:
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       run: |
         echo "🏥 Running database health check..."
-        npx ts-node scripts/check-database-status.ts
+        npx tsx scripts/check-database-status.ts
         echo "✅ Database health check completed"
         
     - name: BMSB Coverage Validation
@@ -41,7 +41,7 @@ jobs:
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       run: |
         echo "📊 Validating BMSB coverage..."
-        npx ts-node scripts/check-bmsb-coverage.ts
+        npx tsx scripts/check-bmsb-coverage.ts
         echo "✅ BMSB coverage validation completed"
         
     - name: System Health Report

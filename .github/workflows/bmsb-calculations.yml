@@ -31,7 +31,7 @@ jobs:
         COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
       run: |
         echo "🧮 Starting BMSB calculations..."
-        npx ts-node scripts/calculate-database-bmsb.ts
+        npx tsx scripts/calculate-database-bmsb.ts
         echo "✅ BMSB calculations completed at $(date)"
       
     - name: Log Failure

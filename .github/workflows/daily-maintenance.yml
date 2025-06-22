@@ -32,7 +32,7 @@ jobs:
         COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
       run: |
         echo "📊 Updating market cap rankings..."
-        npx ts-node scripts/update-rankings.ts
+        npx tsx scripts/update-rankings.ts
         echo "✅ Rankings update completed"
         
     - name: Discover New Cryptocurrencies
@@ -43,7 +43,7 @@ jobs:
         COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
       run: |
         echo "🔍 Discovering new tokens in top 200..."
-        npx ts-node scripts/discover-cryptocurrencies.ts
+        npx tsx scripts/discover-cryptocurrencies.ts
         echo "✅ Token discovery completed"
         
     - name: Update Top 150 Cryptocurrencies (API endpoint)
