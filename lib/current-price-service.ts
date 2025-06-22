@@ -59,19 +59,44 @@ export class CurrentPriceService {
         if (priceInfo && priceInfo.usd) {
           const currentPrice = priceInfo.usd;
           
-          // Upsert into daily_prices table
-          const { error: dailyError } = await supabaseAdmin
+          // Check if entry exists for today
+          const { data: existingEntry } = await supabaseAdmin
             .from('daily_prices')
-            .upsert({
+            .select('open_price, high_price, low_price')
+            .eq('cryptocurrency_id', crypto.id)
+            .eq('date', today)
+            .single();
+
+          let upsertData;
+          if (existingEntry) {
+            // Update existing entry - only update close_price and adjust high/low if needed
+            upsertData = {
+              cryptocurrency_id: crypto.id,
+              date: today,
+              open_price: existingEntry.open_price, // Keep original open
+              high_price: Math.max(existingEntry.high_price || currentPrice, currentPrice),
+              low_price: Math.min(existingEntry.low_price || currentPrice, currentPrice),
+              close_price: currentPrice,
+              volume: 0,
+              market_cap: 0
+            };
+          } else {
+            // New entry for today - set all prices to current price
+            upsertData = {
               cryptocurrency_id: crypto.id,
               date: today,
               open_price: currentPrice,
               high_price: currentPrice,
               low_price: currentPrice,
               close_price: currentPrice,
-              volume: 0, // Volume not available from simple/price endpoint
-              market_cap: 0 // Market cap not available from simple/price endpoint
-            }, {
+              volume: 0,
+              market_cap: 0
+            };
+          }
+
+          const { error: dailyError } = await supabaseAdmin
+            .from('daily_prices')
+            .upsert(upsertData, {
               onConflict: 'cryptocurrency_id,date'
             });
 
@@ -142,19 +167,44 @@ export class CurrentPriceService {
               
               console.log(`   🔄 Updating ${crypto.symbol} (${crypto.coingecko_id}) with price $${currentPrice.toFixed(2)}`);
               
-              // Upsert into daily_prices table
-              const { data: upsertData, error: dailyError } = await supabaseAdmin
+              // Check if entry exists for today
+              const { data: existingEntry } = await supabaseAdmin
                 .from('daily_prices')
-                .upsert({
+                .select('open_price, high_price, low_price')
+                .eq('cryptocurrency_id', crypto.id)
+                .eq('date', today)
+                .single();
+
+              let upsertData;
+              if (existingEntry) {
+                // Update existing entry - only update close_price and adjust high/low if needed
+                upsertData = {
+                  cryptocurrency_id: crypto.id,
+                  date: today,
+                  open_price: existingEntry.open_price, // Keep original open
+                  high_price: Math.max(existingEntry.high_price || currentPrice, currentPrice),
+                  low_price: Math.min(existingEntry.low_price || currentPrice, currentPrice),
+                  close_price: currentPrice,
+                  volume: 0,
+                  market_cap: 0
+                };
+              } else {
+                // New entry for today - set all prices to current price
+                upsertData = {
                   cryptocurrency_id: crypto.id,
                   date: today,
                   open_price: currentPrice,
                   high_price: currentPrice,
                   low_price: currentPrice,
                   close_price: currentPrice,
-                  volume: 0, // Volume not available from simple/price endpoint
-                  market_cap: 0 // Market cap not available from simple/price endpoint
-                }, {
+                  volume: 0,
+                  market_cap: 0
+                };
+              }
+
+              const { data: upsertResult, error: dailyError } = await supabaseAdmin
+                .from('daily_prices')
+                .upsert(upsertData, {
                   onConflict: 'cryptocurrency_id,date'
                 })
                 .select();
@@ -164,7 +214,7 @@ export class CurrentPriceService {
                 console.error(`   ❌ Full error details:`, JSON.stringify(dailyError, null, 2));
               } else {
                 totalUpdated++;
-                console.log(`   ✅ ${crypto.symbol}: $${currentPrice.toFixed(2)} - DB response:`, upsertData);
+                console.log(`   ✅ ${crypto.symbol}: $${currentPrice.toFixed(2)} - DB response:`, upsertResult);
               }
             } else {
               console.warn(`   ⚠️  No price data for ${crypto.symbol}`);
