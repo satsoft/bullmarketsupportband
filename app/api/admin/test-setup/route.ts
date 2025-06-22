@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
           status: `❌ API Error: ${apiError instanceof Error ? apiError.message : 'Unknown error'}`
         };
       }
+    }
 
     return NextResponse.json({
       success: true,
