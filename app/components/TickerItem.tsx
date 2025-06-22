@@ -11,7 +11,7 @@ interface TickerItemProps {
 
 export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   const [showChart, setShowChart] = useState(false);
-  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0, width: 420, height: 440 });
+  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0, width: 420, height: 420 });
   const [isMobile, setIsMobile] = useState(false);
   const statusBoxRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
     if (statusBoxRef.current) {
       const rect = statusBoxRef.current.getBoundingClientRect();
       const chartWidth = isMobile ? Math.min(320, window.innerWidth - 40) : 420;
-      const chartHeight = isMobile ? 450 : 440;
+      const chartHeight = isMobile ? 430 : 420;
       
       // Position the chart below the status box
       let top = rect.bottom + 8;
@@ -201,7 +201,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
             </div>
             
             {/* BMSB Data Section */}
-            <div className="p-3 border-t border-gray-700 bg-gray-800">
+            <div className="p-3 bg-gray-900">
               <div className="text-white text-sm font-semibold mb-2">
                 Bull Market Support Band Data
               </div>
