@@ -182,14 +182,14 @@ export const Dashboard: React.FC = () => {
               height={56} 
               className="w-14 h-14 flex-shrink-0"
             />
-            <div className="flex-1 space-y-0.5 text-center">
+            <div className="flex-1 space-y-0.5 text-left">
               {/* Line 1: BULL MARKET SUPPORT BAND */}
               <div className="text-white font-bold text-sm leading-tight">
                 BULL MARKET SUPPORT BAND
               </div>
               
               {/* Line 2: MARKET STATUS BULLISH/BEARISH */}
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <span className="text-gray-400 text-xs">MARKET STATUS</span>
                 <div className="flex items-center space-x-1">
                   <div className={`w-2 h-2 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
@@ -200,7 +200,7 @@ export const Dashboard: React.FC = () => {
               </div>
               
               {/* Line 3: HEALTHY COUNT WEAK COUNT */}
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-green-400 rounded-sm"></div>
                   <span className="text-green-400 font-semibold text-xs">{healthyCount}</span>
