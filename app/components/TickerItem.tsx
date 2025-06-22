@@ -12,7 +12,38 @@ interface TickerItemProps {
 export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   const [showChart, setShowChart] = useState(false);
   const [chartPosition, setChartPosition] = useState({ top: 0, left: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   const statusBoxRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile screen size
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Close chart when clicking outside on mobile
+  React.useEffect(() => {
+    if (!isMobile || !showChart) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      // Don't close if clicking on the status box or chart
+      if (statusBoxRef.current?.contains(target) || 
+          target.closest('.tradingview-chart-container')) {
+        return;
+      }
+      setShowChart(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobile, showChart]);
 
   const updateChartPosition = () => {
     if (statusBoxRef.current) {
@@ -73,6 +104,18 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   };
 
   const handleStatusBoxClick = () => {
+    // On mobile, toggle the chart instead of opening TradingView
+    if (isMobile) {
+      if (showChart) {
+        setShowChart(false);
+      } else {
+        updateChartPosition();
+        setShowChart(true);
+      }
+      return;
+    }
+    
+    // On desktop, open TradingView in new tab
     // Generate TradingView URL - use the custom symbol if available, otherwise fallback to symbol
     const tvSymbol = ticker.tradingview_symbol || `CRYPTO:${ticker.symbol}USD`;
     const tradingViewUrl = `https://www.tradingview.com/chart/?symbol=${tvSymbol}`;
@@ -117,10 +160,18 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
         ref={statusBoxRef}
         className={`w-6 h-6 flex-shrink-0 mr-1.5 ${getStatusColor()} ${getStatusShadow()} shadow-md cursor-pointer hover:scale-110 transition-transform duration-200`}
         onMouseEnter={() => {
-          updateChartPosition();
-          setShowChart(true);
+          // Only show chart on hover for desktop
+          if (!isMobile) {
+            updateChartPosition();
+            setShowChart(true);
+          }
         }}
-        onMouseLeave={() => setShowChart(false)}
+        onMouseLeave={() => {
+          // Only hide chart on mouse leave for desktop
+          if (!isMobile) {
+            setShowChart(false);
+          }
+        }}
         onClick={handleStatusBoxClick}
       >
       </div>
@@ -128,7 +179,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
       {/* TradingView Chart Portal */}
       {showChart && typeof window !== 'undefined' && createPortal(
         <div 
-          className="fixed z-[1000] pointer-events-none"
+          className="tradingview-chart-container fixed z-[1000] pointer-events-none"
           style={{
             top: `${chartPosition.top}px`,
             left: `${chartPosition.left}px`,

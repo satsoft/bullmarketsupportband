@@ -107,7 +107,8 @@ export const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-black text-white font-mono">
       {/* Header */}
       <div className="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-2">
-        <div className="flex items-start space-x-2 sm:space-x-3">
+        {/* Desktop Header (md and up) */}
+        <div className="hidden md:flex items-start space-x-2 sm:space-x-3">
           <Image 
             src="/logos/bullmarketsupportband.png" 
             alt="Bull Market Support Band Logo" 
@@ -198,10 +199,105 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Mobile Header (below md) */}
+        <div className="md:hidden">
+          <div className="flex items-start space-x-3">
+            <Image 
+              src="/logos/bullmarketsupportband.png" 
+              alt="Bull Market Support Band Logo" 
+              width={40} 
+              height={40} 
+              className="w-10 h-10 flex-shrink-0"
+            />
+            <div className="flex-1 space-y-0.5 text-center">
+              {/* Line 1: BULL MARKET SUPPORT BAND */}
+              <div className="text-white font-bold text-sm leading-tight">
+                BULL MARKET SUPPORT BAND
+              </div>
+              
+              {/* Line 2: MARKET STATUS BULLISH/BEARISH */}
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-gray-400 text-xs">MARKET STATUS</span>
+                <div className="flex items-center space-x-1">
+                  <div className={`w-2 h-2 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                  <span className={`text-xs font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
+                    {healthyCount > weakCount ? 'BULLISH' : 'BEARISH'}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Line 3: HEALTHY COUNT WEAK COUNT */}
+              <div className="flex items-center justify-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-green-400 rounded-sm"></div>
+                  <span className="text-green-400 font-semibold text-xs">{healthyCount}</span>
+                  <span className="text-gray-500 text-xs">HEALTHY</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-red-400 rounded-sm"></div>
+                  <span className="text-red-400 font-semibold text-xs">{weakCount}</span>
+                  <span className="text-gray-500 text-xs">WEAK</span>
+                </div>
+              </div>
+              
+              {/* Line 4: TOP 100 CRYPTOS BY MARKET CAP */}
+              <div className="text-gray-500 text-xs">
+                <ExclusionTooltip excludedTokens={excludedTokens}>
+                  <span className="border-b border-dotted border-gray-500 cursor-help">
+                    TOP 100 CRYPTOS BY MARKET CAP<sup>*</sup>
+                  </span>
+                </ExclusionTooltip>
+              </div>
+              
+              {/* Line 5: POWERED BY COINGECKO API */}
+              <div className="text-gray-500 text-xs">
+                POWERED BY{' '}
+                <a 
+                  href="https://www.coingecko.com/en/api" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-orange-400 underline"
+                >
+                  COINGECKO API
+                </a>
+              </div>
+              
+              {/* Line 6: BUILT BY STABLESCARAB */}
+              <div className="text-gray-500 text-xs">
+                BUILT BY{' '}
+                <a 
+                  href="https://x.com/StableScarab" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-400 underline"
+                >
+                  STABLESCARAB
+                </a>
+              </div>
+              
+              {/* Line 7: SYSTEM OPERATIONAL */}
+              <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>SYSTEM OPERATIONAL</span>
+              </div>
+              
+              {/* Line 8: LAST UPDATE */}
+              {lastUpdate && (
+                <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>LAST UPDATE: {formatTimeAgo(lastUpdate)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Content - Responsive height */}
-      <div className="h-[calc(100vh-70px)] sm:h-[calc(100vh-75px)] lg:h-[calc(100vh-80px)]">
+      <div className="h-[calc(100vh-160px)] md:h-[calc(100vh-80px)]">
         {/* Ticker List - Full Width */}
         <div className="h-full bg-gray-950">
           {loading ? (
