@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const results: any[] = [];
+    const results: string[] = [];
     
     // Test 1: Read from cryptocurrencies table
     results.push('=== TEST 1: Reading from cryptocurrencies ===');
