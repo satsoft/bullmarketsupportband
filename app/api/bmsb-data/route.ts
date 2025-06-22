@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
     // Get latest daily prices for all cryptocurrencies
     const { data: dailyPrices } = await supabaseAdmin
       .from('daily_prices')
-      .select('cryptocurrency_id, close_price, date, updated_at, created_at')
+      .select('cryptocurrency_id, close_price, date')
       .in('cryptocurrency_id', cryptoIds)
       .order('date', { ascending: false });
 
