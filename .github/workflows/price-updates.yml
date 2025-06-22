@@ -1,0 +1,30 @@
+name: Price Updates Every 10 Minutes
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Update Current Prices
+      run: |
+        curl -X POST "${{ vars.PRODUCTION_URL }}/api/admin/update-prices" \
+          -H "Authorization: Bearer ${{ secrets.ADMIN_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          --fail-with-body \
+          --max-time 300
+      
+    - name: Log Success
+      if: success()
+      run: echo "✅ Price update completed successfully at $(date)"
+      
+    - name: Log Failure
+      if: failure()
+      run: |
+        echo "❌ Price update failed at $(date)"
+        exit 1

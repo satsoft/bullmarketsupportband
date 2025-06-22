@@ -1,0 +1,41 @@
+name: BMSB Calculations Every Hour
+
+on:
+  schedule:
+    # Run every hour at 5 minutes past the hour
+    - cron: '5 * * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  calculate-bmsb:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: npm ci
+      
+    - name: Run BMSB Calculations
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+      run: |
+        echo "🧮 Starting BMSB calculations..."
+        npx ts-node scripts/calculate-database-bmsb.ts
+        echo "✅ BMSB calculations completed at $(date)"
+      
+    - name: Log Failure
+      if: failure()
+      run: |
+        echo "❌ BMSB calculation failed at $(date)"
+        exit 1

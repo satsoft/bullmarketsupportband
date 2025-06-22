@@ -1,0 +1,45 @@
+name: Update Cryptocurrency Prices
+
+on:
+  schedule:
+    # Run every hour at the top of the hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allow manual triggering from GitHub UI
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Update cryptocurrency prices
+      run: |
+        echo "🔄 Triggering price update at $(date)"
+        
+        response=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.DEPLOYMENT_URL }}/api/cron/update-prices" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Type: application/json")
+        
+        http_code=$(echo "$response" | tail -n1)
+        body=$(echo "$response" | head -n -1)
+        
+        echo "📡 Response code: $http_code"
+        echo "📊 Response body: $body"
+        
+        if [ "$http_code" -eq 200 ]; then
+          echo "✅ Price update successful!"
+        else
+          echo "❌ Price update failed with code $http_code"
+          echo "$body"
+          exit 1
+        fi
+
+  notify-on-failure:
+    runs-on: ubuntu-latest
+    needs: update-prices
+    if: failure()
+    
+    steps:
+    - name: Notify on failure
+      run: |
+        echo "❌ Price update workflow failed at $(date)"
+        echo "Check the logs above for details"

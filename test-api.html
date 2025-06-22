@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test BMSB API</title>
+</head>
+<body>
+    <h1>Testing BMSB API</h1>
+    <div id="status">Loading...</div>
+    <div id="data"></div>
+    
+    <script>
+        async function testAPI() {
+            const statusDiv = document.getElementById('status');
+            const dataDiv = document.getElementById('data');
+            
+            try {
+                statusDiv.textContent = 'Fetching data...';
+                const response = await fetch('/api/bmsb-data?limit=5');
+                
+                statusDiv.textContent = `Response status: ${response.status}`;
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    statusDiv.textContent = `Success! Got ${data.count} cryptocurrencies`;
+                    dataDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    statusDiv.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                statusDiv.textContent = `Fetch error: ${error.message}`;
+                console.error('API test error:', error);
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>

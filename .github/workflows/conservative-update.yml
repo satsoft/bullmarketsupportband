@@ -1,0 +1,41 @@
+name: Conservative Price Updates (Every 4 Hours)
+
+# This workflow is more API-friendly - runs every 4 hours instead of hourly
+# Uncomment the 'on' section and comment out the one in update-prices.yml to use this instead
+
+# on:
+#   schedule:
+#     # Run every 4 hours at minutes 0 (12 AM, 4 AM, 8 AM, 12 PM, 4 PM, 8 PM UTC)
+#     - cron: '0 */4 * * *'
+#   workflow_dispatch: # Allow manual triggering
+
+on:
+  workflow_dispatch: # Currently disabled - enable by uncommenting above
+
+jobs:
+  conservative-update:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Conservative price update
+      run: |
+        echo "🔄 Running conservative price update (every 4 hours) at $(date)"
+        
+        response=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.DEPLOYMENT_URL }}/api/cron/update-prices" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Type: application/json")
+        
+        http_code=$(echo "$response" | tail -n1)
+        body=$(echo "$response" | head -n -1)
+        
+        echo "📡 Response code: $http_code"
+        echo "📊 Response body: $body"
+        
+        if [ "$http_code" -eq 200 ]; then
+          echo "✅ Conservative price update successful!"
+          echo "📊 This schedule uses ~6 API calls per day vs 24 for hourly updates"
+        else
+          echo "❌ Conservative price update failed with code $http_code"
+          echo "$body"
+          exit 1
+        fi

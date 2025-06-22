@@ -1,0 +1,64 @@
+name: Weekly System Maintenance
+
+on:
+  schedule:
+    # Run every Sunday at 2:00 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  weekly-maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: npm ci
+      
+    - name: Database Health Check
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      run: |
+        echo "🏥 Running database health check..."
+        npx ts-node scripts/check-database-status.ts
+        echo "✅ Database health check completed"
+        
+    - name: BMSB Coverage Validation
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      run: |
+        echo "📊 Validating BMSB coverage..."
+        npx ts-node scripts/check-bmsb-coverage.ts
+        echo "✅ BMSB coverage validation completed"
+        
+    - name: System Health Report
+      run: |
+        echo "📋 Generating system health report..."
+        curl -X GET "${{ vars.PRODUCTION_URL }}/api/admin/test-setup" \
+          -H "Authorization: Bearer ${{ secrets.ADMIN_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          --fail-with-body
+        echo "✅ System health report completed"
+      
+    - name: Log Success
+      if: success()
+      run: echo "✅ Weekly maintenance completed successfully at $(date)"
+      
+    - name: Log Failure
+      if: failure()
+      run: |
+        echo "❌ Weekly maintenance failed at $(date)"
+        exit 1

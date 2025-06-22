@@ -1,0 +1,2437 @@
+[
+  {
+    "rank": 1,
+    "symbol": "BTC",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BTCUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "BTC-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "BTC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "BTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 2,
+    "symbol": "ETH",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ETHUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ETH-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ETH-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 3,
+    "symbol": "USDT",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "USDT-USD"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDt/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 4,
+    "symbol": "XRP",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "XRPUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "XRP-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "XRP-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "XRP/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 5,
+    "symbol": "BNB",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BNBUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "BNB-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 6,
+    "symbol": "SOL",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SOLUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "SOL-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SOL-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "SOL/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 7,
+    "symbol": "USDC",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "USDCUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "USDC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDC/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 8,
+    "symbol": "TRX",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "TRXUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "TRX-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "TRX/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 9,
+    "symbol": "DOGE",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "DOGEUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "DOGE-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "DOGE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "DOGE/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 10,
+    "symbol": "STETH",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 11,
+    "symbol": "ADA",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ADAUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ADA-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ADA-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ADA/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 12,
+    "symbol": "WBTC",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "WBTCUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "WBTC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "WBTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 13,
+    "symbol": "HYPE",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "HYPE-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 14,
+    "symbol": "WSTETH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "wstETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 15,
+    "symbol": "SUI",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SUIUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "SUI-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SUI-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "SUI/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 16,
+    "symbol": "BCH",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BCHUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "BCH-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "BCH-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "BCH/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 17,
+    "symbol": "LINK",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "LINKUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "LINK-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "LINK-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "LINK/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 18,
+    "symbol": "LEO",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 19,
+    "symbol": "XLM",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "XLMUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "XLM-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "XLM-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "XLM/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 20,
+    "symbol": "AVAX",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "AVAXUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "AVAX-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "AVAX-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "AVAX/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 21,
+    "symbol": "TON",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "TONUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "TON-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "TON/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 22,
+    "symbol": "WBT",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "WBT/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 23,
+    "symbol": "SHIB",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SHIBUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "SHIB-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SHIB-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "SHIB/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 24,
+    "symbol": "USDS",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "USDSUSDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDS/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 25,
+    "symbol": "WETH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "WETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 26,
+    "symbol": "WEETH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "weETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 27,
+    "symbol": "LTC",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "LTCUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "LTC-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "LTC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "LTC/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 28,
+    "symbol": "HBAR",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "HBARUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "HBAR-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "HBAR-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "HBAR/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 29,
+    "symbol": "BSC-USD",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 30,
+    "symbol": "XMR",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "XMRUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "XMR-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "XMR/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 31,
+    "symbol": "USDE",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "USDE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDe/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 32,
+    "symbol": "DOT",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "DOTUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "DOT-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "DOT-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "DOT/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 33,
+    "symbol": "BGB",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "BGB/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 34,
+    "symbol": "CBBTC",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "cbBTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 35,
+    "symbol": "UNI",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "UNIUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "UNI-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "UNI-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "UNI/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 36,
+    "symbol": "PEPE",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "PEPEUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "PEPE-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "PEPE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "PEPE/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 37,
+    "symbol": "PI",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "PI/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 38,
+    "symbol": "AAVE",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "AAVEUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "AAVE-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "AAVE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "AAVE/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 39,
+    "symbol": "DAI",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "DAIUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "DAI-USD"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "DAI/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 40,
+    "symbol": "OKB",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "OKB/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 41,
+    "symbol": "SUSDE",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "sUSDe/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 42,
+    "symbol": "TAO",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "TAOUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "TAO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "TAO-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 43,
+    "symbol": "BUIDL",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 44,
+    "symbol": "APT",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "APTUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "APT-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "APT-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "APT/USDt"
+      }
+    ]
+  },
+  {
+    "rank": 45,
+    "symbol": "CRO",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "CRO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "CRO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "CRO/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 46,
+    "symbol": "ICP",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ICPUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ICP-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ICP-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 47,
+    "symbol": "NEAR",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "NEARUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "NEAR-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "NEAR-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "NEAR/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 48,
+    "symbol": "JITOSOL",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "JitoSOL/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 49,
+    "symbol": "ETC",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ETCUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ETC-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ETC-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 50,
+    "symbol": "ONDO",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ONDOUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ONDO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ONDO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ONDO/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 51,
+    "symbol": "SUSDS",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "sUSDS/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 52,
+    "symbol": "TKX",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "TKX/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 53,
+    "symbol": "USD1",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "USD1USDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "USD1-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USD1/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 54,
+    "symbol": "MNT",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "MNT-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 55,
+    "symbol": "GT",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 56,
+    "symbol": "FTN",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 57,
+    "symbol": "VET",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "VETUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "VET-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "VET-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 58,
+    "symbol": "TRUMP",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "TRUMPUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "TRUMP-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "TRUMP-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "TRUMP/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 59,
+    "symbol": "KAS",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "KAS-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "KAS/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 60,
+    "symbol": "ATOM",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ATOMUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ATOM-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ATOM-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ATOM/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 61,
+    "symbol": "FET",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "FETUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "FET-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FET-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "FET/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 62,
+    "symbol": "LBTC",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "LBTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 63,
+    "symbol": "ENA",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ENAUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ENA-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ENA-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 64,
+    "symbol": "POL",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "POLUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "POL-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "POL-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 65,
+    "symbol": "SKY",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SKYBTC"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SKY-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 66,
+    "symbol": "RENDER",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "RENDERUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "RENDER-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "RENDER-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "RENDER/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 67,
+    "symbol": "FIL",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "FILUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "FIL-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FIL-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "FIL/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 68,
+    "symbol": "USDT0",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 69,
+    "symbol": "WETH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "WETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 70,
+    "symbol": "ARB",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ARBUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ARB-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ARB-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ARB/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 71,
+    "symbol": "WLD",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "WLDUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "WLD-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "WLD-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "WLD/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 72,
+    "symbol": "JLP",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "JLP/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 73,
+    "symbol": "FDUSD",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "FDUSDUSDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "FDUSD/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 74,
+    "symbol": "ALGO",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ALGOUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ALGO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ALGO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ALGO/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 75,
+    "symbol": "QNT",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "QNTUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "QNT-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "QNT-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 76,
+    "symbol": "USDTB",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "USDtb/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 77,
+    "symbol": "KCS",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "KCS-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 78,
+    "symbol": "BNSOL",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BNSOLUSDT"
+      }
+    ]
+  },
+  {
+    "rank": 79,
+    "symbol": "SPX",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "SPX-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "SPX/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 80,
+    "symbol": "NEXO",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "NEXOUSDT"
+      }
+    ]
+  },
+  {
+    "rank": 81,
+    "symbol": "RETH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "rETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 82,
+    "symbol": "JUP",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "JUPUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "JUP-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "JUP/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 83,
+    "symbol": "FLR",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "FLR-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FLR-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 84,
+    "symbol": "RSETH",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 85,
+    "symbol": "KAIA",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "KAIAUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "KAIA-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 86,
+    "symbol": "SEI",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SEIUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "SEI-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SEI-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "SEI/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 87,
+    "symbol": "TIA",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "TIAUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "TIA-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "TIA-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "TIA/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 88,
+    "symbol": "VIRTUAL",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "VIRTUALUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "VIRTUAL-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "VIRTUAL/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 89,
+    "symbol": "INJ",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "INJUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "INJ-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "INJ-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "INJ/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 90,
+    "symbol": "BONK",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BONKUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "BONK-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "BONK-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "Bonk/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 91,
+    "symbol": "FARTCOIN",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "FARTCOIN-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FARTCOIN-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 92,
+    "symbol": "USDT",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "USDT-USD"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDt/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 93,
+    "symbol": "S",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "S-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 94,
+    "symbol": "USDC",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "USDCUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "USDC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "USDC/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 95,
+    "symbol": "STX",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "STXUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "STX-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "STX-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 96,
+    "symbol": "OP",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "OPUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "OP-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "OP-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "OP/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 97,
+    "symbol": "XDC",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "XDC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "XDC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 98,
+    "symbol": "PYUSD",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "PYUSD-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "PYUSD/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 99,
+    "symbol": "OSETH",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 100,
+    "symbol": "METH",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "mETH/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 101,
+    "symbol": "SOLVBTC",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 102,
+    "symbol": "AB",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "AB/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 103,
+    "symbol": "WBNB",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "WBNB/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 104,
+    "symbol": "WBTC",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "WBTCUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "WBTC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "WBTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 105,
+    "symbol": "EZETH",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 106,
+    "symbol": "PAXG",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "PAXGUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "PAXG-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "PAXG-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "PAXG/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 107,
+    "symbol": "GRT",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "GRTUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "GRT-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "GRT-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "GRT/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 108,
+    "symbol": "XAUT",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "XAUt/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 109,
+    "symbol": "A",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "AUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "A-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 110,
+    "symbol": "CLBTC",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 111,
+    "symbol": "IP",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "IP-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "IP-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 112,
+    "symbol": "WIF",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "WIFUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "WIF-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "WIF-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 113,
+    "symbol": "CRV",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "CRVUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "CRV-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "CRV-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "CRV/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 114,
+    "symbol": "SYRUPUSDC",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "syrupUSDC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 115,
+    "symbol": "IMX",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "IMXUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "IMX-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "IMX-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 116,
+    "symbol": "AERO",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "AERO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "AERO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "AERO/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 117,
+    "symbol": "JTO",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "JTOUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "JTO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "JTO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "JTO/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 118,
+    "symbol": "JUPSOL",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 119,
+    "symbol": "FLOKI",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "FLOKIUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "FLOKI-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FLOKI-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 120,
+    "symbol": "MSOL",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "MSOL-USD"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "mSOL/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 121,
+    "symbol": "CAKE",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "CAKEUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "CAKE-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "CAKE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "Cake/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 122,
+    "symbol": "LSETH",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "coinbase",
+        "pair": "LSETH-USD"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "LsETH/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 123,
+    "symbol": "OUSG",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 124,
+    "symbol": "LDO",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "LDOUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "LDO-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "LDO-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "LDO/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 125,
+    "symbol": "THETA",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "THETAUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "THETA-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "THETA/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 126,
+    "symbol": "ZEC",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ZECUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ZEC-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ZEC-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ZEC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 127,
+    "symbol": "USDX",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "USDX/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 128,
+    "symbol": "ENS",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "ENSUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "ENS-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "ENS-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "ENS/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 129,
+    "symbol": "GALA",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "GALAUSDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "GALA/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 130,
+    "symbol": "IOTA",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "IOTAUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "IOTA-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "IOTA/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 131,
+    "symbol": "BSV",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 132,
+    "symbol": "USDY",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "USDY/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 133,
+    "symbol": "SAND",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "SANDUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "SAND-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "SAND-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 134,
+    "symbol": "PENDLE",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "PENDLEUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "PENDLE-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "PENDLE-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "PENDLE/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 135,
+    "symbol": "JASMY",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "JASMYUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "JASMY-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "JASMY-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 136,
+    "symbol": "USD0",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "USD0/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 137,
+    "symbol": "BTT",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "BTTUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "BTT-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "BTT/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 138,
+    "symbol": "PENGU",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "PENGUUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "PENGU-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "PENGU-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "PENGU/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 139,
+    "symbol": "XSOLVBTC",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 140,
+    "symbol": "WAL",
+    "exchanges": 2,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "WAL-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "WAL/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 141,
+    "symbol": "PYTH",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "PYTHUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "PYTH-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "PYTH-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 142,
+    "symbol": "RAY",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "RAYUSDT"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "RAY-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "RAY/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 143,
+    "symbol": "USDF",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "USDF/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 144,
+    "symbol": "SUPEROETH",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 145,
+    "symbol": "XTZ",
+    "exchanges": 3,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "XTZUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "XTZ-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "XTZ-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 146,
+    "symbol": "CORE",
+    "exchanges": 0,
+    "mappings": []
+  },
+  {
+    "rank": 147,
+    "symbol": "FLOW",
+    "exchanges": 4,
+    "mappings": [
+      {
+        "exchange": "binance",
+        "pair": "FLOWUSDT"
+      },
+      {
+        "exchange": "coinbase",
+        "pair": "FLOW-USD"
+      },
+      {
+        "exchange": "kucoin",
+        "pair": "FLOW-USDT"
+      },
+      {
+        "exchange": "dexscreener",
+        "pair": "FLOW/USDT"
+      }
+    ]
+  },
+  {
+    "rank": 148,
+    "symbol": "TBTC",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "dexscreener",
+        "pair": "tBTC/USDC"
+      }
+    ]
+  },
+  {
+    "rank": 149,
+    "symbol": "SAROS",
+    "exchanges": 1,
+    "mappings": [
+      {
+        "exchange": "kucoin",
+        "pair": "SAROS-USDT"
+      }
+    ]
+  },
+  {
+    "rank": 150,
+    "symbol": "WHYPE",
+    "exchanges": 0,
+    "mappings": []
+  }
+]

@@ -1,0 +1,34 @@
+name: Update Top 150 Cryptocurrencies
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC to get new cryptocurrencies and ranking changes
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-top-cryptos:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Update top 150 cryptocurrencies
+      run: |
+        echo "🚀 Updating top 150 cryptocurrencies at $(date)"
+        
+        response=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.DEPLOYMENT_URL }}/api/admin/update-top-150" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Type: application/json")
+        
+        http_code=$(echo "$response" | tail -n1)
+        body=$(echo "$response" | head -n -1)
+        
+        echo "📡 Response code: $http_code"
+        echo "📊 Response body: $body"
+        
+        if [ "$http_code" -eq 200 ]; then
+          echo "✅ Top cryptocurrencies update successful!"
+        else
+          echo "❌ Top cryptocurrencies update failed with code $http_code"
+          echo "$body"
+          exit 1
+        fi
