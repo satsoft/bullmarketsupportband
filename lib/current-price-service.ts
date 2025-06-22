@@ -140,8 +140,10 @@ export class CurrentPriceService {
             if (priceInfo && priceInfo.usd) {
               const currentPrice = priceInfo.usd;
               
+              console.log(`   🔄 Updating ${crypto.symbol} (${crypto.coingecko_id}) with price $${currentPrice.toFixed(2)}`);
+              
               // Upsert into daily_prices table
-              const { error: dailyError } = await supabaseAdmin
+              const { data: upsertData, error: dailyError } = await supabaseAdmin
                 .from('daily_prices')
                 .upsert({
                   cryptocurrency_id: crypto.id,
@@ -154,13 +156,15 @@ export class CurrentPriceService {
                   market_cap: 0 // Market cap not available from simple/price endpoint
                 }, {
                   onConflict: 'cryptocurrency_id,date'
-                });
+                })
+                .select();
 
               if (dailyError) {
                 console.error(`   ❌ Error updating ${crypto.symbol}:`, dailyError);
+                console.error(`   ❌ Full error details:`, JSON.stringify(dailyError, null, 2));
               } else {
                 totalUpdated++;
-                console.log(`   ✅ ${crypto.symbol}: $${currentPrice.toFixed(2)}`);
+                console.log(`   ✅ ${crypto.symbol}: $${currentPrice.toFixed(2)} - DB response:`, upsertData);
               }
             } else {
               console.warn(`   ⚠️  No price data for ${crypto.symbol}`);
@@ -178,7 +182,24 @@ export class CurrentPriceService {
         }
       }
 
-      console.log(`\n✅ Current price update completed: ${totalUpdated}/${cryptocurrencies?.length || 0} updated`);
+      console.log(`\n✅ FINAL SUMMARY: Updated ${totalUpdated}/${cryptocurrencies?.length || 0} cryptocurrency prices`);
+      
+      // Verify a few updates by checking the database
+      if (totalUpdated > 0) {
+        const { data: recentPrices, error: verifyError } = await supabaseAdmin
+          .from('daily_prices')
+          .select('cryptocurrency_id, close_price, date')
+          .eq('date', today)
+          .order('date', { ascending: false })
+          .limit(5);
+          
+        if (verifyError) {
+          console.error('❌ Error verifying updates:', verifyError);
+        } else {
+          console.log(`\n🔍 VERIFICATION - Found ${recentPrices?.length || 0} records for today (${today}):`, 
+            recentPrices?.map(p => `ID:${p.cryptocurrency_id} = $${p.close_price}`).join(', '));
+        }
+      }
       
     } catch (error) {
       console.error('❌ Error updating current prices:', error);
