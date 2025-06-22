@@ -184,16 +184,16 @@ export const Dashboard: React.FC = () => {
             />
             <div className="flex-1 space-y-0.5 text-left">
               {/* Line 1: BULL MARKET SUPPORT BAND */}
-              <div className="text-white font-bold text-sm leading-tight">
+              <div className="text-white font-bold text-base leading-tight">
                 BULL MARKET SUPPORT BAND
               </div>
               
               {/* Line 2: MARKET STATUS BULLISH/BEARISH */}
               <div className="flex items-center space-x-2">
-                <span className="text-gray-400 text-xs">MARKET STATUS</span>
+                <span className="text-gray-400 text-sm">MARKET STATUS</span>
                 <div className="flex items-center space-x-1">
                   <div className={`w-2 h-2 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                  <span className={`text-xs font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
+                  <span className={`text-sm font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
                     {healthyCount > weakCount ? 'BULLISH' : 'BEARISH'}
                   </span>
                 </div>
@@ -254,7 +254,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Content - Responsive height */}
-      <div className="h-[calc(100vh-160px)] md:h-[calc(100vh-80px)]">
+      <div className="h-[calc(100vh-170px)] md:h-[calc(100vh-80px)]">
         {/* Ticker List - Full Width */}
         <div className="h-full bg-gray-950">
           {loading ? (

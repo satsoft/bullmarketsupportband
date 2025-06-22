@@ -11,7 +11,7 @@ interface TickerItemProps {
 
 export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   const [showChart, setShowChart] = useState(false);
-  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0, width: 420 });
+  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0, width: 420, height: 440 });
   const [isMobile, setIsMobile] = useState(false);
   const statusBoxRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
     if (statusBoxRef.current) {
       const rect = statusBoxRef.current.getBoundingClientRect();
       const chartWidth = isMobile ? Math.min(320, window.innerWidth - 40) : 420;
-      const chartHeight = 410;
+      const chartHeight = isMobile ? 450 : 440;
       
       // Position the chart below the status box
       let top = rect.bottom + 8;
@@ -77,7 +77,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
         }
       }
       
-      setChartPosition({ top, left, width: chartWidth });
+      setChartPosition({ top, left, width: chartWidth, height: chartHeight });
     }
   };
   // Determine status color based on BMSB band health
@@ -188,7 +188,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
             top: `${chartPosition.top}px`,
             left: `${chartPosition.left}px`,
             width: `${chartPosition.width}px`,
-            height: '410px'
+            height: `${chartPosition.height}px`
           }}
         >
           <div className="bg-gray-900 rounded-lg shadow-2xl border border-gray-600 overflow-hidden w-full h-full">

@@ -68,8 +68,8 @@ export const metadata: Metadata = {
   classification: 'Cryptocurrency Analysis Tool',
   other: {
     'application-name': 'BMSB Dashboard',
-    'msapplication-TileColor': '#2B5CE6',
-    'theme-color': '#2B5CE6'
+    'msapplication-TileColor': '#030712',
+    'theme-color': '#030712'
   }
 }
 
