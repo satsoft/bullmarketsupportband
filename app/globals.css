@@ -76,7 +76,23 @@
   
   /* Ensure all root containers match our dark theme */
   :root {
-    background-color: #030712; /* gray-950 hex value */
+    background-color: #030712 !important; /* gray-950 hex value */
+  }
+  
+  /* Force dark background for mobile status bar area */
+  @supports (padding: env(safe-area-inset-top)) {
+    body {
+      padding-top: env(safe-area-inset-top);
+      background-color: #030712 !important;
+    }
+  }
+  
+  /* Additional mobile viewport fixes */
+  @media screen and (max-width: 768px) {
+    html, body {
+      background-color: #030712 !important;
+      background: #030712 !important;
+    }
   }
 }
 

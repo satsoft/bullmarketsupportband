@@ -13,22 +13,30 @@ interface ExclusionTooltipProps {
 
 export const ExclusionTooltip: React.FC<ExclusionTooltipProps> = ({ children, excludedTokens }) => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0, width: 400 });
   const triggerRef = useRef<HTMLSpanElement>(null);
 
   const updateTooltipPosition = (element: HTMLElement) => {
     const rect = element.getBoundingClientRect();
-    const tooltipWidth = 400;
+    const isMobile = window.innerWidth < 768;
+    const tooltipWidth = isMobile ? Math.min(300, window.innerWidth - 40) : 400;
     const tooltipHeight = 300;
     
     // Position directly below the trigger element
     let top = rect.bottom + 5;
     let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
     
-    // Ensure tooltip doesn't go off screen
-    const maxLeft = window.innerWidth - tooltipWidth - 20;
-    if (left > maxLeft) left = maxLeft;
-    if (left < 20) left = 20;
+    // Mobile-specific positioning
+    if (isMobile) {
+      // Center on mobile with padding
+      left = (window.innerWidth - tooltipWidth) / 2;
+      left = Math.max(20, Math.min(left, window.innerWidth - tooltipWidth - 20));
+    } else {
+      // Desktop positioning
+      const maxLeft = window.innerWidth - tooltipWidth - 20;
+      if (left > maxLeft) left = maxLeft;
+      if (left < 20) left = 20;
+    }
     
     // If tooltip would go below viewport, position it above
     if (top + tooltipHeight > window.innerHeight - 20) {
@@ -38,7 +46,7 @@ export const ExclusionTooltip: React.FC<ExclusionTooltipProps> = ({ children, ex
       }
     }
     
-    setTooltipPosition({ top, left });
+    setTooltipPosition({ top, left, width: tooltipWidth });
   };
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
@@ -120,7 +128,7 @@ export const ExclusionTooltip: React.FC<ExclusionTooltipProps> = ({ children, ex
           style={{
             top: `${tooltipPosition.top}px`,
             left: `${tooltipPosition.left}px`,
-            width: '400px'
+            width: `${tooltipPosition.width}px`
           }}
         >
           <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-600 overflow-hidden max-h-80">

@@ -11,7 +11,7 @@ interface TickerItemProps {
 
 export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   const [showChart, setShowChart] = useState(false);
-  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0 });
+  const [chartPosition, setChartPosition] = useState({ top: 0, left: 0, width: 420 });
   const [isMobile, setIsMobile] = useState(false);
   const statusBoxRef = useRef<HTMLDivElement>(null);
 
@@ -48,19 +48,24 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
   const updateChartPosition = () => {
     if (statusBoxRef.current) {
       const rect = statusBoxRef.current.getBoundingClientRect();
-      const chartWidth = 420;
-      const chartHeight = 410; // Updated to match actual popup height
+      const chartWidth = isMobile ? Math.min(320, window.innerWidth - 40) : 420;
+      const chartHeight = 410;
       
       // Position the chart below the status box
       let top = rect.bottom + 8;
       let left = rect.left + (rect.width / 2) - (chartWidth / 2);
       
-      // Ensure chart doesn't go off the right edge
-      const maxLeft = window.innerWidth - chartWidth - 20;
-      if (left > maxLeft) left = maxLeft;
-      
-      // Ensure chart doesn't go off the left edge
-      if (left < 20) left = 20;
+      // Mobile-specific positioning
+      if (isMobile) {
+        // Center the chart with padding on mobile
+        left = (window.innerWidth - chartWidth) / 2;
+        left = Math.max(20, Math.min(left, window.innerWidth - chartWidth - 20));
+      } else {
+        // Desktop positioning
+        const maxLeft = window.innerWidth - chartWidth - 20;
+        if (left > maxLeft) left = maxLeft;
+        if (left < 20) left = 20;
+      }
       
       // If chart would go below viewport, position it above the status box
       if (top + chartHeight > window.innerHeight - 20) {
@@ -68,12 +73,11 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
         
         // If positioning above would go off the top, position it to fit within viewport
         if (top < 20) {
-          // Position it to fit within the viewport with some padding
           top = Math.max(20, window.innerHeight - chartHeight - 20);
         }
       }
       
-      setChartPosition({ top, left });
+      setChartPosition({ top, left, width: chartWidth });
     }
   };
   // Determine status color based on BMSB band health
@@ -183,8 +187,8 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
           style={{
             top: `${chartPosition.top}px`,
             left: `${chartPosition.left}px`,
-            width: '420px',
-            height: '410px' // Adjusted height
+            width: `${chartPosition.width}px`,
+            height: '410px'
           }}
         >
           <div className="bg-gray-900 rounded-lg shadow-2xl border border-gray-600 overflow-hidden w-full h-full">

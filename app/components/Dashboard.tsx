@@ -174,13 +174,13 @@ export const Dashboard: React.FC = () => {
 
         {/* Mobile Header (below md) */}
         <div className="md:hidden">
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-4">
             <Image 
               src="/logos/bullmarketsupportband.png" 
               alt="Bull Market Support Band Logo" 
-              width={40} 
-              height={40} 
-              className="w-10 h-10 flex-shrink-0"
+              width={56} 
+              height={56} 
+              className="w-14 h-14 flex-shrink-0"
             />
             <div className="flex-1 space-y-0.5 text-center">
               {/* Line 1: BULL MARKET SUPPORT BAND */}
@@ -246,12 +246,6 @@ export const Dashboard: React.FC = () => {
                 >
                   STABLESCARAB
                 </a>
-              </div>
-              
-              {/* Line 7: SYSTEM OPERATIONAL */}
-              <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span>SYSTEM OPERATIONAL</span>
               </div>
               
             </div>
