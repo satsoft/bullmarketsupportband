@@ -15,8 +15,8 @@ jobs:
       run: |
         echo "🔄 Triggering price update at $(date)"
         
-        response=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.DEPLOYMENT_URL }}/api/cron/update-prices" \
-          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+        response=$(curl -s -w "\n%{http_code}" -X POST "${{ vars.PRODUCTION_URL }}/api/cron/update-prices" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET_KEY }}" \
           -H "Content-Type: application/json")
         
         http_code=$(echo "$response" | tail -n1)
