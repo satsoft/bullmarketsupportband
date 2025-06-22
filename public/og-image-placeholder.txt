@@ -1,0 +1,26 @@
+# Social Media Image Placeholder
+
+## Required: Open Graph Image (og-image.png)
+- **Dimensions**: 1200x630 pixels
+- **Format**: PNG or JPG
+- **Content**: 
+  - Bull Market Support Band branding
+  - Key metrics preview
+  - Professional crypto/financial theme
+  - StableScarab attribution
+
+## Suggested Design Elements:
+- BMSB logo/icon
+- Sample chart visualization 
+- "Real-time Crypto BMSB Analysis" headline
+- Key stats: "Top 100 Cryptocurrencies", "Live Updates"
+- Modern dark theme matching dashboard
+- @StableScarab credit
+
+## File Location:
+Place the final image at: `/public/og-image.png`
+
+This will be automatically used for:
+- Open Graph (Facebook, LinkedIn)
+- Twitter Cards
+- Other social media previews
