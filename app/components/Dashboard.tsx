@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Ticker, BMSBApiResponse } from '../types';
 import { TickerList } from './TickerList';
 import { ExclusionTooltip } from './ExclusionTooltip';
+import { BMSBTooltip } from './BMSBTooltip';
 
 
 export const Dashboard: React.FC = () => {
@@ -95,12 +96,20 @@ export const Dashboard: React.FC = () => {
             width={48} 
             height={48} 
             className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0"
+            style={{ filter: 'none' }}
           />
           <div className="flex-1 space-y-1">
             {/* Main Header Row */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-1 lg:space-y-0">
               <div className="flex items-center space-x-2 sm:space-x-4">
-                <h1 className="text-lg sm:text-xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
+                <div className="flex items-center space-x-2">
+                  <h1 className="text-lg sm:text-xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
+                  <BMSBTooltip>
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-gray-400 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors cursor-pointer">
+                      <span className="text-[10px] sm:text-xs font-bold">i</span>
+                    </div>
+                  </BMSBTooltip>
+                </div>
                 <div className="hidden sm:block h-6 w-px bg-gray-700"></div>
                 <div className="hidden sm:block text-sm text-gray-400">
                   CRYPTO MONITORING SYSTEM
@@ -173,7 +182,20 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Mobile Header (below md) */}
-        <div className="md:hidden">
+        <div className="md:hidden space-y-2">
+          {/* Top Row: BULL MARKET SUPPORT BAND - Left Aligned */}
+          <div className="flex items-center space-x-2">
+            <div className="text-white font-bold text-xl leading-tight">
+              BULL MARKET SUPPORT BAND
+            </div>
+            <BMSBTooltip>
+              <div className="w-3 h-3 rounded-full border border-gray-400 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors cursor-pointer">
+                <span className="text-[10px] font-bold">i</span>
+              </div>
+            </BMSBTooltip>
+          </div>
+          
+          {/* Bottom Row: Logo Left, Content Right */}
           <div className="flex items-start space-x-4">
             <Image 
               src="/logos/bullmarketsupportband.png" 
@@ -181,14 +203,10 @@ export const Dashboard: React.FC = () => {
               width={56} 
               height={56} 
               className="w-14 h-14 flex-shrink-0"
+              style={{ filter: 'none' }}
             />
             <div className="flex-1 space-y-0.5 text-left">
-              {/* Line 1: BULL MARKET SUPPORT BAND */}
-              <div className="text-white font-bold text-base leading-tight">
-                BULL MARKET SUPPORT BAND
-              </div>
-              
-              {/* Line 2: MARKET STATUS BULLISH/BEARISH */}
+              {/* Line 1: MARKET STATUS BULLISH/BEARISH */}
               <div className="flex items-center space-x-2">
                 <span className="text-gray-400 text-sm">MARKET STATUS</span>
                 <div className="flex items-center space-x-1">
@@ -199,7 +217,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
               
-              {/* Line 3: HEALTHY COUNT WEAK COUNT */}
+              {/* Line 2: HEALTHY COUNT WEAK COUNT */}
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-green-400 rounded-sm"></div>
@@ -213,7 +231,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
               
-              {/* Line 4: TOP 100 CRYPTOS BY MARKET CAP */}
+              {/* Line 3: TOP 100 CRYPTOS BY MARKET CAP */}
               <div className="text-gray-500 text-xs">
                 <ExclusionTooltip excludedTokens={excludedTokens}>
                   <span className="border-b border-dotted border-gray-500 cursor-help">
@@ -222,7 +240,7 @@ export const Dashboard: React.FC = () => {
                 </ExclusionTooltip>
               </div>
               
-              {/* Line 5: POWERED BY COINGECKO API */}
+              {/* Line 4: POWERED BY COINGECKO API */}
               <div className="text-gray-500 text-xs">
                 POWERED BY{' '}
                 <a 
@@ -235,7 +253,7 @@ export const Dashboard: React.FC = () => {
                 </a>
               </div>
               
-              {/* Line 6: BUILT BY STABLESCARAB */}
+              {/* Line 5: BUILT BY STABLESCARAB */}
               <div className="text-gray-500 text-xs">
                 BUILT BY{' '}
                 <a 

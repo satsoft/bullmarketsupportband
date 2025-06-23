@@ -139,11 +139,21 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
               #{ticker.rank}
             </span>
             <div className="leading-tight">
-              <div className="text-white font-mono text-xs font-semibold">
-                {ticker.symbol}
+              {/* Desktop and tablet: Symbol and name on separate lines */}
+              <div className="hidden sm:block">
+                <div className="text-white font-mono text-xs font-semibold">
+                  {ticker.symbol}
+                </div>
+                <div className="text-gray-500 text-xs truncate max-w-32 leading-none">
+                  {ticker.name}
+                </div>
               </div>
-              <div className="text-gray-500 text-xs truncate max-w-32 leading-none">
-                {ticker.name}
+              
+              {/* Mobile single column: Symbol and name on same line */}
+              <div className="sm:hidden">
+                <div className="text-white font-mono text-xs font-semibold">
+                  {ticker.symbol} <span className="text-gray-500 font-normal">{ticker.name}</span>
+                </div>
               </div>
             </div>
           </div>
