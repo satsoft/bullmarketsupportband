@@ -135,7 +135,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
       className="flex items-center bg-gray-900 border-b border-gray-800 hover:bg-gray-850 transition-colors duration-200"
     >
       {/* Ticker Content */}
-      <div className="flex-1 px-2 py-1 sm:py-0.5 lg:py-1">
+      <div className="flex-1 px-2 py-0.5 sm:py-0.5 lg:py-0.75">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1.5">
             <span className={`text-gray-400 font-mono w-6 ${ticker.rank >= 100 ? 'text-[10px]' : 'text-xs'}`}>

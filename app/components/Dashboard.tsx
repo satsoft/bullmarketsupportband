@@ -177,7 +177,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white font-mono">
       {/* Header */}
-      <div className="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-2">
+      <div className="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-1.5">
         {/* Desktop Header (md and up) */}
         <div className="hidden md:flex items-start space-x-2 sm:space-x-3">
           <Image 
@@ -208,32 +208,32 @@ export const Dashboard: React.FC = () => {
               
               <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                 <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="text-xs sm:text-sm lg:text-base text-gray-400">MARKET STATUS</div>
+                  <div className="text-xs sm:text-sm text-gray-400">MARKET STATUS</div>
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <div className={`w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                    <span className={`text-xs sm:text-sm lg:text-base font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
+                    <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                    <span className={`text-xs sm:text-sm font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
                       {healthyCount > weakCount ? 'BULLISH' : 'BEARISH'}
                     </span>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-1 sm:space-x-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-green-400 rounded-sm"></div>
-                  <span className="text-green-400 font-semibold text-xs sm:text-sm lg:text-base">{healthyCount}</span>
-                  <span className="text-gray-500 text-xs sm:text-sm">HEALTHY</span>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-sm"></div>
+                  <span className="text-green-400 font-semibold text-xs sm:text-sm">{healthyCount}</span>
+                  <span className="text-gray-500 text-xs">HEALTHY</span>
                 </div>
                 
                 
                 <div className="flex items-center space-x-1 sm:space-x-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-red-400 rounded-sm"></div>
-                  <span className="text-red-400 font-semibold text-xs sm:text-sm lg:text-base">{weakCount}</span>
-                  <span className="text-gray-500 text-xs sm:text-sm">WEAK</span>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-red-400 rounded-sm"></div>
+                  <span className="text-red-400 font-semibold text-xs sm:text-sm">{weakCount}</span>
+                  <span className="text-gray-500 text-xs">WEAK</span>
                 </div>
               </div>
             </div>
             
             {/* Status Bar Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-gray-500 space-y-1 sm:space-y-0">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between text-xs text-gray-500 space-y-1 sm:space-y-0">
               <div className="flex items-center flex-wrap gap-4 sm:gap-6">
                 <span>
                   <ExclusionTooltip excludedTokens={excludedTokens}>
@@ -278,7 +278,7 @@ export const Dashboard: React.FC = () => {
                       onFocus={handleSearchFocus}
                       onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
                       placeholder="Search cryptos..."
-                      className="w-48 lg:w-64 pl-10 pr-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400"
+                      className="w-48 lg:w-64 pl-10 pr-3 py-1 text-xs bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400"
                     />
                   </div>
                   
@@ -334,7 +334,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Mobile Header (below md) */}
-        <div className="md:hidden space-y-2">
+        <div className="md:hidden space-y-1.5">
           {/* Top Row: BULL MARKET SUPPORT BAND - Left Aligned */}
           <div className="flex items-center space-x-2">
             <div className="text-white font-bold text-xl leading-tight">
@@ -422,7 +422,7 @@ export const Dashboard: React.FC = () => {
           </div>
           
           {/* Mobile Search Bar */}
-          <div className="mt-3 relative">
+          <div className="mt-2 relative">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -486,7 +486,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Content - Responsive height */}
-      <div className="h-[calc(100vh-170px)] md:h-[calc(100vh-80px)]">
+      <div className="h-[calc(100vh-190px)] md:h-[calc(100vh-92px)]">
         {/* Ticker List - Full Width */}
         <div className="h-full bg-gray-950">
           {loading ? (
