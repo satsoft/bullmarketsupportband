@@ -10,7 +10,24 @@ interface WeeklyData {
 }
 
 interface BMSBCalculation {
+  meta?: {
+    currentTime: string;
+    currentDay: string;
+    currentDate: string;
+    hasCurrentData: boolean;
+    latestDataDate: string;
+    totalDailyPrices: number;
+    totalWeeklyPrices: number;
+    weeklyChangeoverAnalysis: {
+      smaChange: number;
+      emaChange: number;
+      smaChangePercent: number;
+      emaChangePercent: number;
+      largeChangesDetected: boolean;
+    };
+  };
   weeklyData: WeeklyData[];
+  recentWeeklyPrices?: number[];
   sma20Previous: number;
   ema21Previous: number;
   sma20Current: number;
@@ -115,9 +132,115 @@ export default function TestBMSBPage() {
           </div>
         </div>
 
+        {/* Weekly Changeover Analysis */}
+        {calculation.meta && (
+          <div className="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4">📅 Weekly Changeover Analysis</h2>
+            
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="font-semibold text-blue-400 mb-3">Current Status</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Current Time (UTC):</span>
+                    <span className="font-mono">{new Date(calculation.meta.currentTime).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Current Day:</span>
+                    <span className="font-mono">{calculation.meta.currentDay}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Latest Data Date:</span>
+                    <span className="font-mono">{calculation.meta.latestDataDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Has Current Day Data:</span>
+                    <span className={`font-mono ${calculation.meta.hasCurrentData ? 'text-green-400' : 'text-red-400'}`}>
+                      {calculation.meta.hasCurrentData ? '✅ Yes' : '❌ No'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold text-purple-400 mb-3">Data Overview</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Total Daily Prices:</span>
+                    <span className="font-mono">{calculation.meta.totalDailyPrices}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Total Weekly Prices:</span>
+                    <span className="font-mono">{calculation.meta.totalWeeklyPrices}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-700 pt-6">
+              <h3 className="font-semibold text-orange-400 mb-3">Weekly Changeover Impact</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-gray-700 rounded p-4">
+                  <div className="font-semibold text-blue-300 mb-2">20W SMA Change</div>
+                  <div className={`text-2xl font-mono ${calculation.meta.weeklyChangeoverAnalysis.smaChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {calculation.meta.weeklyChangeoverAnalysis.smaChange >= 0 ? '+' : ''}${calculation.meta.weeklyChangeoverAnalysis.smaChange.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {calculation.meta.weeklyChangeoverAnalysis.smaChangePercent >= 0 ? '+' : ''}{calculation.meta.weeklyChangeoverAnalysis.smaChangePercent.toFixed(3)}%
+                  </div>
+                </div>
+                
+                <div className="bg-gray-700 rounded p-4">
+                  <div className="font-semibold text-green-300 mb-2">21W EMA Change</div>
+                  <div className={`text-2xl font-mono ${calculation.meta.weeklyChangeoverAnalysis.emaChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {calculation.meta.weeklyChangeoverAnalysis.emaChange >= 0 ? '+' : ''}${calculation.meta.weeklyChangeoverAnalysis.emaChange.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {calculation.meta.weeklyChangeoverAnalysis.emaChangePercent >= 0 ? '+' : ''}{calculation.meta.weeklyChangeoverAnalysis.emaChangePercent.toFixed(3)}%
+                  </div>
+                </div>
+              </div>
+              
+              {calculation.meta.weeklyChangeoverAnalysis.largeChangesDetected && (
+                <div className="mt-4 bg-yellow-900/30 border border-yellow-600 rounded p-4">
+                  <div className="flex items-center mb-2">
+                    <span className="text-yellow-400 mr-2">⚠️</span>
+                    <span className="font-semibold text-yellow-300">Large Changes Detected</span>
+                  </div>
+                  <div className="text-sm text-yellow-200">
+                    Changes greater than $1,000 detected - likely due to weekly changeover with new data incorporation.
+                    This is normal behavior when new weekly data becomes available.
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Recent Weekly Prices Debug */}
+        {calculation.recentWeeklyPrices && (
+          <div className="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4">🔍 Most Recent Weekly Prices Used</h2>
+            <div className="grid grid-cols-5 gap-4">
+              {calculation.recentWeeklyPrices.map((price, index) => (
+                <div key={index} className="bg-gray-700 rounded p-3 text-center">
+                  <div className="text-xs text-gray-400 mb-1">Week {calculation.recentWeeklyPrices!.length - 4 + index}</div>
+                  <div className="font-mono text-sm">${price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                  {index === calculation.recentWeeklyPrices!.length - 1 && (
+                    <div className="text-xs text-yellow-400 mt-1">Latest</div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 text-xs text-gray-400">
+              These are the 5 most recent weekly closing prices extracted from your data and used in BMSB calculations.
+            </div>
+          </div>
+        )}
+
         {/* Weekly Data Table */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4">21 Weeks of Closing Prices (Monday-Sunday UTC)</h2>
+          <h2 className="text-xl font-bold mb-4">📊 Weekly Closing Prices (Monday-Sunday UTC)</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
