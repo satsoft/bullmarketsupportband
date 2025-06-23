@@ -4,8 +4,10 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Ticker, BMSBApiResponse } from '../types';
 import { TickerList } from './TickerList';
+import { TickerItem } from './TickerItem';
 import { ExclusionTooltip } from './ExclusionTooltip';
 import { BMSBTooltip } from './BMSBTooltip';
+import { FavoritesBar } from './FavoritesBar';
 
 export const Dashboard: React.FC = () => {
   const [tickers, setTickers] = useState<Ticker[]>([]);
@@ -17,6 +19,7 @@ export const Dashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [hasFavorites, setHasFavorites] = useState(false);
 
   const fetchBMSBData = async () => {
     try {
@@ -143,6 +146,29 @@ export const Dashboard: React.FC = () => {
       setShowSearchDropdown(true);
     }
   }, [isMobileView, searchTerm]);
+
+  // Handle favorite click - scroll to ticker and highlight
+  const handleFavoriteClick = useCallback((ticker: Ticker) => {
+    handleCryptoSelect(ticker);
+  }, [handleCryptoSelect]);
+
+  // Check for favorites on mount and when favorites change
+  const checkFavorites = useCallback(() => {
+    const favorites = JSON.parse(localStorage.getItem('cryptoFavorites') || '[]');
+    setHasFavorites(favorites.length > 0);
+  }, []);
+
+  // Listen for favorites changes
+  useEffect(() => {
+    checkFavorites();
+    
+    const handleFavoritesChange = () => {
+      checkFavorites();
+    };
+
+    window.addEventListener('favoritesChanged', handleFavoritesChange);
+    return () => window.removeEventListener('favoritesChanged', handleFavoritesChange);
+  }, [checkFavorites]);
 
   useEffect(() => {
     // Initial load
@@ -291,25 +317,13 @@ export const Dashboard: React.FC = () => {
                             {filteredCryptos.length} result{filteredCryptos.length === 1 ? '' : 's'}
                           </div>
                           {filteredCryptos.map((ticker) => (
-                            <button
-                              key={ticker.id}
-                              onClick={() => handleCryptoSelect(ticker)}
-                              className="w-full px-3 py-2 text-left hover:bg-gray-700 focus:bg-gray-700 focus:outline-none border-b border-gray-700 last:border-b-0"
-                            >
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <div className="font-semibold text-white text-sm">
-                                    {ticker.symbol}
-                                  </div>
-                                  <div className="text-xs text-gray-400 truncate">
-                                    {ticker.name}
-                                  </div>
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  #{ticker.rank}
-                                </div>
-                              </div>
-                            </button>
+                            <div key={ticker.id} className="border-b border-gray-700 last:border-b-0">
+                              <TickerItem 
+                                ticker={ticker} 
+                                index={0} 
+                                showFavoritesStar={true}
+                              />
+                            </div>
                           ))}
                         </>
                       ) : searchTerm.length > 0 ? (
@@ -450,25 +464,13 @@ export const Dashboard: React.FC = () => {
                       {filteredCryptos.length} result{filteredCryptos.length === 1 ? '' : 's'}
                     </div>
                     {filteredCryptos.map((ticker) => (
-                      <button
-                        key={ticker.id}
-                        onClick={() => handleCryptoSelect(ticker)}
-                        className="w-full px-3 py-2 text-left hover:bg-gray-700 focus:bg-gray-700 focus:outline-none border-b border-gray-700 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-semibold text-white text-sm">
-                              {ticker.symbol}
-                            </div>
-                            <div className="text-xs text-gray-400 truncate">
-                              {ticker.name}
-                            </div>
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            #{ticker.rank}
-                          </div>
-                        </div>
-                      </button>
+                      <div key={ticker.id} className="border-b border-gray-700 last:border-b-0">
+                        <TickerItem 
+                          ticker={ticker} 
+                          index={0} 
+                          showFavoritesStar={true}
+                        />
+                      </div>
                     ))}
                   </>
                 ) : searchTerm.length > 0 ? (
@@ -485,8 +487,17 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Favorites Bar */}
+      <FavoritesBar 
+        tickers={tickers} 
+        onFavoriteClick={handleFavoriteClick}
+      />
+
       {/* Main Content - Responsive height */}
-      <div className="h-[calc(100vh-190px)] md:h-[calc(100vh-92px)]">
+      <div className={`${hasFavorites 
+        ? 'h-[calc(100vh-230px)] md:h-[calc(100vh-132px)]' 
+        : 'h-[calc(100vh-190px)] md:h-[calc(100vh-92px)]'
+      }`}>
         {/* Ticker List - Full Width */}
         <div className="h-full bg-gray-950">
           {loading ? (

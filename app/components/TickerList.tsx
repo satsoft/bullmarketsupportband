@@ -41,7 +41,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                     <TickerItem 
                       key={ticker.id} 
                       ticker={ticker} 
-                      index={start + index} 
+                      index={start + index}
                     />
                   ))}
                 </div>
@@ -65,7 +65,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                     <TickerItem 
                       key={ticker.id} 
                       ticker={ticker} 
-                      index={start + index} 
+                      index={start + index}
                     />
                   ))}
                 </div>
@@ -90,7 +90,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                     <TickerItem 
                       key={ticker.id} 
                       ticker={ticker} 
-                      index={start + index} 
+                      index={start + index}
                     />
                   ))}
                 </div>
@@ -114,7 +114,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                     <TickerItem 
                       key={ticker.id} 
                       ticker={ticker} 
-                      index={start + index} 
+                      index={start + index}
                     />
                   ))}
                 </div>
@@ -131,7 +131,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                 <TickerItem 
                   key={ticker.id} 
                   ticker={ticker} 
-                  index={index} 
+                  index={index}
                 />
               ))}
             </div>
