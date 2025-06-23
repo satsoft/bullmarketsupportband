@@ -36,7 +36,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
             
             return (
               <div key={columnIndex} className="overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700 border-r border-gray-800 last:border-r-0 bg-gray-900">
-                <div className="divide-y divide-gray-800">
+                <div>
                   {columnTickers.map((ticker, index) => (
                     <TickerItem 
                       key={ticker.id} 
@@ -44,7 +44,6 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       index={start + index} 
                     />
                   ))}
-                  <div className="border-t border-gray-800"></div>
                 </div>
               </div>
             );
@@ -61,7 +60,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
             
             return (
               <div key={columnIndex} className="overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700 border-r border-gray-800 last:border-r-0 bg-gray-900">
-                <div className="divide-y divide-gray-800">
+                <div>
                   {columnTickers.map((ticker, index) => (
                     <TickerItem 
                       key={ticker.id} 
@@ -69,7 +68,6 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       index={start + index} 
                     />
                   ))}
-                  <div className="border-t border-gray-800"></div>
                 </div>
               </div>
             );
@@ -84,11 +82,10 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
             const start = columnIndex * 33 + (columnIndex > 0 ? 1 : 0); // Adjust for uneven distribution
             const end = columnIndex === 0 ? 34 : start + 33;
             const columnTickers = tickers.slice(start, end);
-            const hasEmptySpace = columnTickers.length < 34; // Only first column will be full
             
             return (
               <div key={columnIndex} className="overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700 border-r border-gray-800 last:border-r-0 bg-gray-900">
-                <div className="divide-y divide-gray-800">
+                <div>
                   {columnTickers.map((ticker, index) => (
                     <TickerItem 
                       key={ticker.id} 
@@ -96,9 +93,6 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       index={start + index} 
                     />
                   ))}
-                  {hasEmptySpace && (
-                    <div className="border-t border-gray-800"></div>
-                  )}
                 </div>
               </div>
             );
@@ -115,7 +109,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
             
             return (
               <div key={columnIndex} className="overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700 border-r border-gray-800 last:border-r-0 bg-gray-900">
-                <div className="divide-y divide-gray-800">
+                <div>
                   {columnTickers.map((ticker, index) => (
                     <TickerItem 
                       key={ticker.id} 
@@ -123,7 +117,6 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       index={start + index} 
                     />
                   ))}
-                  <div className="border-t border-gray-800"></div>
                 </div>
               </div>
             );
@@ -141,7 +134,6 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                   index={index} 
                 />
               ))}
-              <div className="border-t border-gray-800"></div>
             </div>
           </div>
         </div>

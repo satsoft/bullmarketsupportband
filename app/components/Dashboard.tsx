@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Ticker, BMSBApiResponse } from '../types';
 import { TickerList } from './TickerList';
 import { ExclusionTooltip } from './ExclusionTooltip';
 import { BMSBTooltip } from './BMSBTooltip';
 
-
 export const Dashboard: React.FC = () => {
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [excludedTokens, setExcludedTokens] = useState<Array<{symbol: string; category: string}>>([]);
+  
+  // Search functionality
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   const fetchBMSBData = async () => {
     try {
@@ -69,6 +73,77 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+
+  // Search filtering - only search through displayed tickers
+  const filteredCryptos = useMemo(() => {
+    if (!searchTerm.trim()) return [];
+    
+    const term = searchTerm.toLowerCase();
+    return tickers.filter(ticker => 
+      ticker.symbol.toLowerCase().includes(term) || 
+      ticker.name.toLowerCase().includes(term)
+    ).slice(0, 8); // Limit to 8 results for compact display
+  }, [searchTerm, tickers]);
+
+  // Mobile ticker filtering - when searching on mobile, show only matching tickers
+  const displayTickers = useMemo(() => {
+    // On mobile with active search, show only matching tickers (no limit)
+    if (isMobileView && searchTerm.trim()) {
+      const term = searchTerm.toLowerCase();
+      return tickers.filter(ticker => 
+        ticker.symbol.toLowerCase().includes(term) || 
+        ticker.name.toLowerCase().includes(term)
+      );
+    }
+    // Default: show all tickers
+    return tickers;
+  }, [searchTerm, tickers, isMobileView]);
+
+  // Handle search term changes
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchTerm(value);
+    // Only show dropdown on desktop, not on mobile where we filter the main list
+    setShowSearchDropdown(value.length > 0 && !isMobileView);
+  }, [isMobileView]);
+
+  // Handle crypto selection
+  const handleCryptoSelect = useCallback((ticker: Ticker) => {
+    // Highlight the selected ticker
+    const element = document.getElementById(`ticker-${ticker.symbol}`);
+    if (element) {
+      // Highlight the entire card briefly with inset ring
+      element.classList.add('!bg-yellow-400/20', 'ring-2', 'ring-inset', 'ring-yellow-400');
+      setTimeout(() => {
+        element.classList.remove('!bg-yellow-400/20', 'ring-2', 'ring-inset', 'ring-yellow-400');
+      }, 2000);
+    }
+    
+    // On desktop, clear search immediately
+    // On mobile, keep search persistent - only clear when user clicks search bar again
+    if (!isMobileView) {
+      setSearchTerm('');
+    }
+    setShowSearchDropdown(false);
+  }, [isMobileView]);
+
+  // Handle Enter key press
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && filteredCryptos.length === 1) {
+      handleCryptoSelect(filteredCryptos[0]);
+    }
+  }, [filteredCryptos, handleCryptoSelect]);
+
+  // Handle search bar focus - on mobile, clear search if there's an existing search
+  const handleSearchFocus = useCallback(() => {
+    if (isMobileView && searchTerm.trim()) {
+      setSearchTerm('');
+    }
+    // Show dropdown on desktop when focusing
+    if (!isMobileView && searchTerm) {
+      setShowSearchDropdown(true);
+    }
+  }, [isMobileView, searchTerm]);
+
   useEffect(() => {
     // Initial load
     fetchBMSBData();
@@ -79,6 +154,21 @@ export const Dashboard: React.FC = () => {
     }, 120000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Track mobile view for search filtering
+  useEffect(() => {
+    const checkMobileView = () => {
+      setIsMobileView(window.innerWidth < 640); // sm breakpoint
+    };
+    
+    // Initial check
+    checkMobileView();
+    
+    // Listen for resize events
+    window.addEventListener('resize', checkMobileView);
+    
+    return () => window.removeEventListener('resize', checkMobileView);
   }, []);
 
   const healthyCount = tickers.filter(t => t.band_health === 'healthy').length;
@@ -93,9 +183,9 @@ export const Dashboard: React.FC = () => {
           <Image 
             src="/logos/bullmarketsupportband.png" 
             alt="Bull Market Support Band Logo" 
-            width={48} 
-            height={48} 
-            className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0"
+            width={56} 
+            height={56} 
+            className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex-shrink-0"
             style={{ filter: 'none' }}
           />
           <div className="flex-1 space-y-1">
@@ -103,7 +193,7 @@ export const Dashboard: React.FC = () => {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-1 lg:space-y-0">
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <div className="flex items-center space-x-2">
-                  <h1 className="text-lg sm:text-xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
                   <BMSBTooltip>
                     <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-gray-400 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors cursor-pointer">
                       <span className="text-[10px] sm:text-xs font-bold">i</span>
@@ -111,39 +201,39 @@ export const Dashboard: React.FC = () => {
                   </BMSBTooltip>
                 </div>
                 <div className="hidden sm:block h-6 w-px bg-gray-700"></div>
-                <div className="hidden sm:block text-sm text-gray-400">
+                <div className="hidden sm:block text-lg lg:text-xl text-gray-400">
                   CRYPTO MONITORING SYSTEM
                 </div>
               </div>
               
               <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                 <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="text-xs sm:text-sm text-gray-400">MARKET STATUS</div>
+                  <div className="text-xs sm:text-sm lg:text-base text-gray-400">MARKET STATUS</div>
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                    <span className={`text-xs sm:text-sm font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
+                    <div className={`w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 rounded-full ${healthyCount > weakCount ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                    <span className={`text-xs sm:text-sm lg:text-base font-bold ${healthyCount > weakCount ? 'text-green-400' : 'text-red-400'}`}>
                       {healthyCount > weakCount ? 'BULLISH' : 'BEARISH'}
                     </span>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-1 sm:space-x-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-sm"></div>
-                  <span className="text-green-400 font-semibold text-xs sm:text-sm">{healthyCount}</span>
-                  <span className="text-gray-500 text-xs">HEALTHY</span>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-green-400 rounded-sm"></div>
+                  <span className="text-green-400 font-semibold text-xs sm:text-sm lg:text-base">{healthyCount}</span>
+                  <span className="text-gray-500 text-xs sm:text-sm">HEALTHY</span>
                 </div>
                 
                 
                 <div className="flex items-center space-x-1 sm:space-x-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-red-400 rounded-sm"></div>
-                  <span className="text-red-400 font-semibold text-xs sm:text-sm">{weakCount}</span>
-                  <span className="text-gray-500 text-xs">WEAK</span>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-red-400 rounded-sm"></div>
+                  <span className="text-red-400 font-semibold text-xs sm:text-sm lg:text-base">{weakCount}</span>
+                  <span className="text-gray-500 text-xs sm:text-sm">WEAK</span>
                 </div>
               </div>
             </div>
             
             {/* Status Bar Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-500 space-y-1 sm:space-y-0">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-gray-500 space-y-1 sm:space-y-0">
               <div className="flex items-center flex-wrap gap-4 sm:gap-6">
                 <span>
                   <ExclusionTooltip excludedTokens={excludedTokens}>
@@ -172,6 +262,68 @@ export const Dashboard: React.FC = () => {
                 </span>
               </div>
               <div className="flex items-center space-x-4">
+                {/* Desktop Search Bar */}
+                <div className="relative">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg className="h-3 w-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => handleSearchChange(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      onFocus={handleSearchFocus}
+                      onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
+                      placeholder="Search cryptos..."
+                      className="w-48 lg:w-64 pl-10 pr-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400"
+                    />
+                  </div>
+                  
+                  {/* Desktop Search Dropdown */}
+                  {showSearchDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded shadow-lg z-50 max-h-64 overflow-y-auto">
+                      {filteredCryptos.length > 0 ? (
+                        <>
+                          <div className="px-3 py-2 text-xs text-gray-400 border-b border-gray-700">
+                            {filteredCryptos.length} result{filteredCryptos.length === 1 ? '' : 's'}
+                          </div>
+                          {filteredCryptos.map((ticker) => (
+                            <button
+                              key={ticker.id}
+                              onClick={() => handleCryptoSelect(ticker)}
+                              className="w-full px-3 py-2 text-left hover:bg-gray-700 focus:bg-gray-700 focus:outline-none border-b border-gray-700 last:border-b-0"
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <div className="font-semibold text-white text-sm">
+                                    {ticker.symbol}
+                                  </div>
+                                  <div className="text-xs text-gray-400 truncate">
+                                    {ticker.name}
+                                  </div>
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  #{ticker.rank}
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </>
+                      ) : searchTerm.length > 0 ? (
+                        <div className="px-3 py-4 text-center text-gray-400">
+                          <div className="text-sm">No matches found</div>
+                          <div className="text-xs mt-1">
+                            "{searchTerm}" not in displayed cryptocurrencies
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+                
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span>SYSTEM OPERATIONAL</span>
@@ -268,6 +420,68 @@ export const Dashboard: React.FC = () => {
               
             </div>
           </div>
+          
+          {/* Mobile Search Bar */}
+          <div className="mt-3 relative">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={handleSearchFocus}
+                onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
+                placeholder="Search cryptos..."
+                className="w-full pl-10 pr-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400"
+              />
+            </div>
+            
+            {/* Mobile Search Dropdown */}
+            {showSearchDropdown && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded shadow-lg z-50 max-h-64 overflow-y-auto">
+                {filteredCryptos.length > 0 ? (
+                  <>
+                    <div className="px-3 py-2 text-xs text-gray-400 border-b border-gray-700">
+                      {filteredCryptos.length} result{filteredCryptos.length === 1 ? '' : 's'}
+                    </div>
+                    {filteredCryptos.map((ticker) => (
+                      <button
+                        key={ticker.id}
+                        onClick={() => handleCryptoSelect(ticker)}
+                        className="w-full px-3 py-2 text-left hover:bg-gray-700 focus:bg-gray-700 focus:outline-none border-b border-gray-700 last:border-b-0"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-semibold text-white text-sm">
+                              {ticker.symbol}
+                            </div>
+                            <div className="text-xs text-gray-400 truncate">
+                              {ticker.name}
+                            </div>
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            #{ticker.rank}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </>
+                ) : searchTerm.length > 0 ? (
+                  <div className="px-3 py-4 text-center text-gray-400">
+                    <div className="text-sm">No matches found</div>
+                    <div className="text-xs mt-1">
+                      "{searchTerm}" not in displayed cryptocurrencies
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -296,7 +510,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
           ) : (
-            <TickerList tickers={tickers} />
+            <TickerList tickers={displayTickers} />
           )}
         </div>
       </div>

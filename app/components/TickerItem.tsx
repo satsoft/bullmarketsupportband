@@ -130,7 +130,10 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
 
   
   return (
-    <div className="flex items-center bg-gray-900 border-b border-gray-800 hover:bg-gray-850 transition-colors duration-200">
+    <div 
+      id={`ticker-${ticker.symbol}`}
+      className="flex items-center bg-gray-900 border-b border-gray-800 hover:bg-gray-850 transition-colors duration-200"
+    >
       {/* Ticker Content */}
       <div className="flex-1 px-2 py-1 sm:py-0.5 lg:py-1">
         <div className="flex items-center justify-between">
@@ -151,7 +154,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
               
               {/* Mobile single column: Symbol and name on same line */}
               <div className="sm:hidden">
-                <div className="text-white font-mono text-xs font-semibold">
+                <div className="text-white font-mono text-sm font-semibold">
                   {ticker.symbol} <span className="text-gray-500 font-normal">{ticker.name}</span>
                 </div>
               </div>
@@ -159,7 +162,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker }) => {
           </div>
           
           <div className="text-right leading-tight">
-            <div className="text-white font-mono text-xs">
+            <div className="text-white font-mono text-xs sm:text-sm">
               ${formatSmallPriceWithSubscript(ticker.price)}
             </div>
             <div className="text-xs font-mono leading-none text-gray-400">
