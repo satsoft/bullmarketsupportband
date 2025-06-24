@@ -66,6 +66,12 @@ export const metadata: Metadata = {
   },
   category: 'Financial Technology',
   classification: 'Cryptocurrency Analysis Tool',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
   other: {
     'application-name': 'BMSB Dashboard',
     'msapplication-TileColor': '#030712',

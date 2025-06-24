@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import { Ticker } from '../types';
 import TradingViewChart from './TradingViewChart';
 import { formatSmallPriceWithSubscript } from '../../lib/price-formatter';
+import { consentManager } from '../../lib/consent';
+import { useConsentPopup } from './GlobalConsentManager';
 
 interface TickerItemProps {
   ticker: Ticker;
@@ -16,33 +18,69 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker, showFavoritesSta
   const [isMobile, setIsMobile] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const statusBoxRef = useRef<HTMLDivElement>(null);
+  const starButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Use global consent popup
+  const { showConsentPopup, hideConsentPopup } = useConsentPopup();
 
   // Load favorites from localStorage on component mount
   React.useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('cryptoFavorites') || '[]');
+    const favorites = consentManager.getFavorites();
     setIsFavorite(favorites.includes(ticker.symbol));
   }, [ticker.symbol]);
 
-  // Toggle favorite status
-  const toggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const favorites = JSON.parse(localStorage.getItem('cryptoFavorites') || '[]');
-    
-    if (isFavorite) {
-      // Remove from favorites
-      const newFavorites = favorites.filter((symbol: string) => symbol !== ticker.symbol);
-      localStorage.setItem('cryptoFavorites', JSON.stringify(newFavorites));
+  // Listen for consent and favorites changes
+  React.useEffect(() => {
+    const handleFavoritesChange = () => {
+      const favorites = consentManager.getFavorites();
+      setIsFavorite(favorites.includes(ticker.symbol));
+    };
+
+    const handleConsentRevoked = () => {
       setIsFavorite(false);
-    } else {
-      // Add to favorites
-      const newFavorites = [...favorites, ticker.symbol];
-      localStorage.setItem('cryptoFavorites', JSON.stringify(newFavorites));
-      setIsFavorite(true);
-    }
+      hideConsentPopup();
+    };
+
+    window.addEventListener('favoritesChanged', handleFavoritesChange);
+    window.addEventListener('consentRevoked', handleConsentRevoked);
+
+    return () => {
+      window.removeEventListener('favoritesChanged', handleFavoritesChange);
+      window.removeEventListener('consentRevoked', handleConsentRevoked);
+    };
+  }, [ticker.symbol, hideConsentPopup]);
+
+  // Handle star click - show consent if needed, or toggle favorite
+  const handleStarClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new CustomEvent('favoritesChanged'));
+    // If user hasn't given consent yet, show consent popup
+    if (!consentManager.hasConsent()) {
+      if (starButtonRef.current) {
+        const rect = starButtonRef.current.getBoundingClientRect();
+        showConsentPopup(
+          {
+            top: rect.bottom + 8,
+            left: rect.left + (rect.width / 2)
+          },
+          () => {
+            // Add to favorites after consent is given
+            consentManager.addFavorite(ticker.symbol);
+          }
+        );
+      }
+      return;
+    }
+
+    // Toggle favorite status
+    if (isFavorite) {
+      consentManager.removeFavorite(ticker.symbol);
+    } else {
+      consentManager.addFavorite(ticker.symbol);
+    }
   };
+
 
   // Detect mobile screen size
   React.useEffect(() => {
@@ -172,7 +210,8 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker, showFavoritesSta
             </span>
             {showFavoritesStar && (
               <button
-                onClick={toggleFavorite}
+                ref={starButtonRef}
+                onClick={handleStarClick}
                 className="p-0.5 hover:bg-gray-700 rounded transition-colors"
                 title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -353,6 +392,7 @@ export const TickerItem: React.FC<TickerItemProps> = ({ ticker, showFavoritesSta
         </div>,
         document.body
       )}
+
     </div>
   );
 };

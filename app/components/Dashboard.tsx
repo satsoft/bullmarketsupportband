@@ -8,6 +8,8 @@ import { TickerItem } from './TickerItem';
 import { ExclusionTooltip } from './ExclusionTooltip';
 import { BMSBTooltip } from './BMSBTooltip';
 import { FavoritesBar } from './FavoritesBar';
+import { consentManager } from '../../lib/consent';
+import { ConsentProvider } from './GlobalConsentManager';
 
 export const Dashboard: React.FC = () => {
   const [tickers, setTickers] = useState<Ticker[]>([]);
@@ -154,7 +156,7 @@ export const Dashboard: React.FC = () => {
 
   // Check for favorites on mount and when favorites change
   const checkFavorites = useCallback(() => {
-    const favorites = JSON.parse(localStorage.getItem('cryptoFavorites') || '[]');
+    const favorites = consentManager.getFavorites();
     setHasFavorites(favorites.length > 0);
   }, []);
 
@@ -166,8 +168,17 @@ export const Dashboard: React.FC = () => {
       checkFavorites();
     };
 
+    const handleConsentRevoked = () => {
+      setHasFavorites(false);
+    };
+
     window.addEventListener('favoritesChanged', handleFavoritesChange);
-    return () => window.removeEventListener('favoritesChanged', handleFavoritesChange);
+    window.addEventListener('consentRevoked', handleConsentRevoked);
+    
+    return () => {
+      window.removeEventListener('favoritesChanged', handleFavoritesChange);
+      window.removeEventListener('consentRevoked', handleConsentRevoked);
+    };
   }, [checkFavorites]);
 
   useEffect(() => {
@@ -201,7 +212,8 @@ export const Dashboard: React.FC = () => {
   const weakCount = tickers.length - healthyCount; // Everything else is considered weak
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono">
+    <ConsentProvider>
+      <div className="min-h-screen bg-black text-white font-mono">
       {/* Header */}
       <div className="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-1.5">
         {/* Desktop Header (md and up) */}
@@ -521,10 +533,14 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
           ) : (
-            <TickerList tickers={displayTickers} />
+            <TickerList 
+              tickers={displayTickers} 
+              showFavoritesStar={isMobileView && searchTerm.trim().length > 0}
+            />
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </ConsentProvider>
   );
 };

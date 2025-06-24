@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Ticker } from '../types';
 import { formatSmallPriceWithSubscript } from '../../lib/price-formatter';
+import { consentManager } from '../../lib/consent';
 import TradingViewChart from './TradingViewChart';
 
 interface FavoritesBarProps {
@@ -116,22 +117,24 @@ const FavoriteTicker: React.FC<FavoriteTickerProps> = ({ ticker, onTickerClick, 
 
   return (
     <>
-      <button
-        onClick={() => onTickerClick(ticker)}
-        className="group flex items-center space-x-1.5 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded px-2 py-1 transition-colors flex-shrink-0"
-      >
-        <span className={`text-gray-400 font-mono text-[10px] w-4`}>
-          #{ticker.rank}
-        </span>
-        <span className="text-white font-mono text-xs font-semibold">
-          {ticker.symbol}
-        </span>
-        <span className="text-gray-500 font-mono text-[10px] hidden sm:inline">
-          ${formatSmallPriceWithSubscript(ticker.price)}
-        </span>
-        <span className="text-gray-400 font-mono text-[9px] hidden md:inline">
-          {getPositionText()}
-        </span>
+      <div className="group flex items-center space-x-1.5 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded px-2 py-1 transition-colors flex-shrink-0">
+        <button
+          onClick={() => onTickerClick(ticker)}
+          className="flex items-center space-x-1.5 focus:outline-none"
+        >
+          <span className={`text-gray-400 font-mono text-[10px] w-4`}>
+            #{ticker.rank}
+          </span>
+          <span className="text-white font-mono text-xs font-semibold">
+            {ticker.symbol}
+          </span>
+          <span className="text-gray-500 font-mono text-[10px] hidden sm:inline">
+            ${formatSmallPriceWithSubscript(ticker.price)}
+          </span>
+          <span className="text-gray-400 font-mono text-[9px] hidden md:inline">
+            {getPositionText()}
+          </span>
+        </button>
         
         {/* Status Box - BMSB Health Color with TradingView Chart */}
         <div 
@@ -159,14 +162,14 @@ const FavoriteTicker: React.FC<FavoriteTickerProps> = ({ ticker, onTickerClick, 
         
         <button
           onClick={(e) => onRemove(ticker.symbol, e)}
-          className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all ml-1"
+          className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all ml-1 focus:outline-none"
           title="Remove from favorites"
         >
           <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-      </button>
+      </div>
 
       {/* TradingView Chart Portal */}
       {showChart && typeof window !== 'undefined' && createPortal(
@@ -285,9 +288,9 @@ const FavoriteTicker: React.FC<FavoriteTickerProps> = ({ ticker, onTickerClick, 
 export const FavoritesBar: React.FC<FavoritesBarProps> = ({ tickers, onFavoriteClick }) => {
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Load favorites from localStorage
+  // Load favorites from consent manager
   const loadFavorites = useCallback(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('cryptoFavorites') || '[]');
+    const storedFavorites = consentManager.getFavorites();
     setFavorites(storedFavorites);
   }, []);
 
@@ -299,17 +302,23 @@ export const FavoritesBar: React.FC<FavoritesBarProps> = ({ tickers, onFavoriteC
       loadFavorites();
     };
 
+    const handleConsentRevoked = () => {
+      setFavorites([]);
+    };
+
     window.addEventListener('favoritesChanged', handleFavoritesChange);
-    return () => window.removeEventListener('favoritesChanged', handleFavoritesChange);
+    window.addEventListener('consentRevoked', handleConsentRevoked);
+    
+    return () => {
+      window.removeEventListener('favoritesChanged', handleFavoritesChange);
+      window.removeEventListener('consentRevoked', handleConsentRevoked);
+    };
   }, [loadFavorites]);
 
   // Remove favorite
   const removeFavorite = (symbol: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const newFavorites = favorites.filter(fav => fav !== symbol);
-    localStorage.setItem('cryptoFavorites', JSON.stringify(newFavorites));
-    setFavorites(newFavorites);
-    window.dispatchEvent(new CustomEvent('favoritesChanged'));
+    consentManager.removeFavorite(symbol);
   };
 
   // Get ticker data for favorites

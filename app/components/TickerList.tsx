@@ -4,9 +4,10 @@ import { TickerItem } from './TickerItem';
 
 interface TickerListProps {
   tickers: Ticker[];
+  showFavoritesStar?: boolean;
 }
 
-export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
+export const TickerList: React.FC<TickerListProps> = ({ tickers, showFavoritesStar = false }) => {
   // Responsive column configuration: [columns, itemsPerColumn]
   const getColumnConfig = () => {
     // We'll use CSS classes to determine which config to use
@@ -42,6 +43,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       key={ticker.id} 
                       ticker={ticker} 
                       index={start + index}
+                      showFavoritesStar={showFavoritesStar}
                     />
                   ))}
                 </div>
@@ -66,6 +68,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       key={ticker.id} 
                       ticker={ticker} 
                       index={start + index}
+                      showFavoritesStar={showFavoritesStar}
                     />
                   ))}
                 </div>
@@ -91,6 +94,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       key={ticker.id} 
                       ticker={ticker} 
                       index={start + index}
+                      showFavoritesStar={showFavoritesStar}
                     />
                   ))}
                 </div>
@@ -115,6 +119,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                       key={ticker.id} 
                       ticker={ticker} 
                       index={start + index}
+                      showFavoritesStar={showFavoritesStar}
                     />
                   ))}
                 </div>
@@ -132,6 +137,7 @@ export const TickerList: React.FC<TickerListProps> = ({ tickers }) => {
                   key={ticker.id} 
                   ticker={ticker} 
                   index={index}
+                  showFavoritesStar={showFavoritesStar}
                 />
               ))}
             </div>
