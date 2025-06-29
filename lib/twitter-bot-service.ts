@@ -72,67 +72,45 @@ export class TwitterBotService {
    * Check for token health status changes
    */
   async detectHealthChanges(): Promise<TokenHealthChange[]> {
-    const currentData = await this.fetchMarketData();
-    const currentTokens = currentData.data.filter(token => token.band_health && !token.is_stablecoin);
-    
-    // Get previous health status from database
-    const { data: previousStates } = await supabaseAdmin
-      .from('twitter_bot_state')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(1);
+    // Get tokens with health changes (where current health != previous health)
+    const { data: changedTokens } = await supabaseAdmin
+      .from('bmsb_calculations')
+      .select(`
+        cryptocurrencies!inner (
+          id, symbol, name, is_stablecoin, 
+          price_change_percentage_24h, current_price
+        ),
+        band_health, previous_health
+      `)
+      .neq('band_health', 'previous_health')
+      .eq('cryptocurrencies.is_stablecoin', false)
+      .not('band_health', 'is', null)
+      .not('previous_health', 'is', null);
 
-    if (!previousStates || previousStates.length === 0) {
-      // First run - store current state
-      await this.storeCurrentState(currentTokens);
+    if (!changedTokens || changedTokens.length === 0) {
       return [];
     }
 
-    const previousTokenMap = new Map(
-      previousStates[0].token_health_data.map((token: { symbol: string; band_health: string }) => [token.symbol, token.band_health])
-    );
+    const changes: TokenHealthChange[] = changedTokens.map((row: any) => ({
+      symbol: row.cryptocurrencies.symbol,
+      name: row.cryptocurrencies.name,
+      previousHealth: row.previous_health as 'healthy' | 'weak',
+      currentHealth: row.band_health as 'healthy' | 'weak',
+      price: row.cryptocurrencies.current_price || 0,
+      changePercent: row.cryptocurrencies.price_change_percentage_24h || 0
+    }));
 
-    const changes: TokenHealthChange[] = [];
-    
-    for (const token of currentTokens) {
-      const previousHealth = previousTokenMap.get(token.symbol);
-      if (previousHealth && previousHealth !== token.band_health) {
-        changes.push({
-          symbol: token.symbol,
-          name: token.name,
-          previousHealth: previousHealth as 'healthy' | 'weak',
-          currentHealth: token.band_health,
-          price: token.price,
-          changePercent: token.changePercent
-        });
-      }
+    // Update previous_health to match current health for detected changes
+    for (const change of changes) {
+      await supabaseAdmin
+        .from('bmsb_calculations')
+        .update({ previous_health: change.currentHealth })
+        .eq('cryptocurrency_id', changedTokens.find((t: any) => t.cryptocurrencies.symbol === change.symbol)?.cryptocurrencies.id);
     }
-
-    // Store new state
-    await this.storeCurrentState(currentTokens);
     
     return changes;
   }
 
-  /**
-   * Store current token health state
-   */
-  private async storeCurrentState(tokens: Ticker[]): Promise<void> {
-    const stateData = tokens.map(token => ({
-      symbol: token.symbol,
-      name: token.name,
-      band_health: token.band_health,
-      price: token.price,
-      changePercent: token.changePercent
-    }));
-
-    await supabaseAdmin
-      .from('twitter_bot_state')
-      .insert({
-        token_health_data: stateData,
-        created_at: new Date().toISOString()
-      });
-  }
 
   /**
    * Generate daily summary tweet

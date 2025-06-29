@@ -154,12 +154,21 @@ export class MockBMSBCalculator {
             crypto.is_stablecoin
           );
           
-          // Store in database
+          // Get current health to store as previous_health
+          const { data: currentRecord } = await supabaseAdmin
+            .from('bmsb_calculations')
+            .select('band_health')
+            .eq('cryptocurrency_id', crypto.id)
+            .eq('calculation_date', new Date().toISOString().split('T')[0])
+            .single();
+
+          // Store in database with previous_health preserved
           const { error: insertError } = await supabaseAdmin
             .from('bmsb_calculations')
             .upsert({
               cryptocurrency_id: crypto.id,
               calculation_date: new Date().toISOString().split('T')[0],
+              previous_health: currentRecord?.band_health || bmsbResult.band_health, // Preserve current as previous
               ...bmsbResult
             }, {
               onConflict: 'cryptocurrency_id,calculation_date'
