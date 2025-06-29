@@ -11,10 +11,6 @@
     {
       "path": "/api/twitter/daily-summary",
       "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/twitter/health-alerts", 
-      "schedule": "10 * * * *"
     }
   ],
   "headers": [
