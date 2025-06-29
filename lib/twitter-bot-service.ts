@@ -91,7 +91,23 @@ export class TwitterBotService {
       return [];
     }
 
-    const changes: TokenHealthChange[] = changedTokens.map((row: any) => ({
+    // Type the database response
+    type DatabaseHealthChangeRow = {
+      cryptocurrencies: {
+        id: string;
+        symbol: string;
+        name: string;
+        is_stablecoin: boolean;
+        price_change_percentage_24h: number | null;
+        current_price: number | null;
+      };
+      band_health: string;
+      previous_health: string;
+    };
+
+    const typedChangedTokens = changedTokens as unknown as DatabaseHealthChangeRow[];
+
+    const changes: TokenHealthChange[] = typedChangedTokens.map((row) => ({
       symbol: row.cryptocurrencies.symbol,
       name: row.cryptocurrencies.name,
       previousHealth: row.previous_health as 'healthy' | 'weak',
@@ -102,10 +118,15 @@ export class TwitterBotService {
 
     // Update previous_health to match current health for detected changes
     for (const change of changes) {
-      await supabaseAdmin
-        .from('bmsb_calculations')
-        .update({ previous_health: change.currentHealth })
-        .eq('cryptocurrency_id', changedTokens.find((t: any) => t.cryptocurrencies.symbol === change.symbol)?.cryptocurrencies.id);
+      const targetRow = typedChangedTokens.find((t) => 
+        t.cryptocurrencies.symbol === change.symbol
+      );
+      if (targetRow) {
+        await supabaseAdmin
+          .from('bmsb_calculations')
+          .update({ previous_health: change.currentHealth })
+          .eq('cryptocurrency_id', targetRow.cryptocurrencies.id);
+      }
     }
     
     return changes;
