@@ -172,12 +172,10 @@ export class TwitterBotService {
       tweet += `${toHealthy.length} token${toHealthy.length > 1 ? 's' : ''} upgraded to HEALTHY:\n\n`;
       
       toHealthy.slice(0, 4).forEach(token => {
-        tweet += `• ${token.symbol} (${token.name})\n`;
+        tweet += `• $${token.symbol} (${token.name})\n`;
         tweet += `  💰 $${token.price.toFixed(4)}\n`;
         tweet += `  📈 ${token.changePercent > 0 ? '+' : ''}${token.changePercent.toFixed(1)}%\n\n`;
       });
-      
-      tweet += `#BMSB #BullMarket #CryptoAlert`;
       tweets.push(tweet);
     }
     
@@ -186,12 +184,10 @@ export class TwitterBotService {
       tweet += `${toWeak.length} token${toWeak.length > 1 ? 's' : ''} downgraded to WEAK:\n\n`;
       
       toWeak.slice(0, 4).forEach(token => {
-        tweet += `• ${token.symbol} (${token.name})\n`;
+        tweet += `• $${token.symbol} (${token.name})\n`;
         tweet += `  💰 $${token.price.toFixed(4)}\n`;
         tweet += `  📉 ${token.changePercent > 0 ? '+' : ''}${token.changePercent.toFixed(1)}%\n\n`;
       });
-      
-      tweet += `#BMSB #CryptoAlert #MarketWeakness`;
       tweets.push(tweet);
     }
     
@@ -386,7 +382,7 @@ export class TwitterBotService {
           
           const tweetText = `🟢 HEALTH IMPROVEMENT ALERT
 
-${token.symbol} (${token.name}) upgraded to HEALTHY!
+$${token.symbol} (${token.name}) upgraded to HEALTHY!
 
 💰 Current Price: $${token.price < 1 ? token.price.toFixed(6) : token.price.toFixed(2)}
 📈 24h Change: ${token.changePercent > 0 ? '+' : ''}${token.changePercent.toFixed(1)}%
@@ -401,7 +397,7 @@ The Bull Market Support Band analysis shows that this token's moving averages ar
         } catch (error) {
           console.error(`Failed to post health improvement alert for ${token.symbol}:`, error);
           // Fallback to text-only tweet
-          const fallbackText = `🟢 ${token.symbol} upgraded to HEALTHY! Price: $${token.price.toFixed(4)} | 24h: ${token.changePercent > 0 ? '+' : ''}${token.changePercent.toFixed(1)}%`;
+          const fallbackText = `🟢 $${token.symbol} upgraded to HEALTHY! Price: $${token.price.toFixed(4)} | 24h: ${token.changePercent > 0 ? '+' : ''}${token.changePercent.toFixed(1)}%`;
           await this.postTweet(fallbackText);
           await this.recordPost('health_change', fallbackText);
         }
