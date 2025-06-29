@@ -261,11 +261,20 @@ export class DatabaseBMSBCalculator {
   // Store BMSB calculation in database
   static async storeBMSBCalculation(cryptocurrencyId: string, calculation: BMSBResult): Promise<void> {
     try {
+      // Get current health to store as previous_health
+      const { data: currentRecord } = await supabaseAdmin
+        .from('bmsb_calculations')
+        .select('band_health')
+        .eq('cryptocurrency_id', cryptocurrencyId)
+        .eq('calculation_date', new Date().toISOString().split('T')[0])
+        .single();
+
       const { error } = await supabaseAdmin
         .from('bmsb_calculations')
         .upsert({
           cryptocurrency_id: cryptocurrencyId,
           calculation_date: new Date().toISOString().split('T')[0],
+          previous_health: currentRecord?.band_health || calculation.band_health, // Preserve current as previous
           ...calculation
         }, {
           onConflict: 'cryptocurrency_id,calculation_date'

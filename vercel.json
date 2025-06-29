@@ -14,7 +14,7 @@
     },
     {
       "path": "/api/twitter/health-alerts", 
-      "schedule": "*/30 * * * *"
+      "schedule": "10 * * * *"
     }
   ],
   "headers": [
