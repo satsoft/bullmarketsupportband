@@ -313,12 +313,15 @@ export class CurrentPriceService {
           });
 
           if (existingCrypto) {
-            // Update existing cryptocurrency
+            // Update existing cryptocurrency with 24h change data
             const { error: updateError } = await supabaseAdmin
               .from('cryptocurrencies')
               .update({
                 current_rank: crypto.market_cap_rank,
                 is_stablecoin: isStablecoinFlag,
+                price_change_percentage_24h: crypto.price_change_percentage_24h || 0,
+                price_change_24h: crypto.current_price * ((crypto.price_change_percentage_24h || 0) / 100),
+                price_updated_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
               })
               .eq('coingecko_id', crypto.id);
@@ -332,7 +335,7 @@ export class CurrentPriceService {
               }
             }
           } else {
-            // Add new cryptocurrency
+            // Add new cryptocurrency with 24h change data
             const { error: insertError } = await supabaseAdmin
               .from('cryptocurrencies')
               .insert({
@@ -342,6 +345,9 @@ export class CurrentPriceService {
                 current_rank: crypto.market_cap_rank,
                 is_active: true,
                 is_stablecoin: isStablecoinFlag,
+                price_change_percentage_24h: crypto.price_change_percentage_24h || 0,
+                price_change_24h: crypto.current_price * ((crypto.price_change_percentage_24h || 0) / 100),
+                price_updated_at: new Date().toISOString(),
                 categories: []
               });
 

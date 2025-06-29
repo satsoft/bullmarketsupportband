@@ -60,7 +60,9 @@ export async function GET(request: NextRequest) {
         symbol,
         name,
         current_rank,
-        is_stablecoin
+        is_stablecoin,
+        price_change_percentage_24h,
+        price_change_24h
       `)
       .eq('is_active', true)
       .order('current_rank', { ascending: true })
@@ -147,7 +149,9 @@ export async function GET(request: NextRequest) {
         exchangeMap.set(mapping.cryptocurrency_id, mapping);
       }
     });
-    
+
+    // 24h price change data is now stored in the database by scheduled price update jobs
+    // This avoids additional API calls while providing real-time change data
 
     // Transform data for frontend and filter for complete BMSB data
     const transformedTickers = eligibleCryptos.map(crypto => {
@@ -172,13 +176,17 @@ export async function GET(request: NextRequest) {
         );
       }
 
+      // Get 24h price change data from database (populated by scheduled price updates)
+      const changePercent = crypto.price_change_percentage_24h || 0;
+      const change = crypto.price_change_24h || 0;
+
       return {
         id: crypto.id,
         symbol: crypto.symbol,
         name: crypto.name,
         price: currentPrice,
-        change: 0, // Will be calculated from price movements over time
-        changePercent: 0, // Will be calculated from price movements over time
+        change: change,
+        changePercent: changePercent,
         status: (bmsbCalc?.band_health === 'healthy' ? 'up' : 'down') as 'up' | 'down',
         lastUpdate: new Date(),
         rank: crypto.current_rank || 0,

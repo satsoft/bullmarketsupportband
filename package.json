@@ -30,7 +30,11 @@
     "test-cron-endpoints": "curl -X POST http://localhost:3000/api/admin/test-setup -H 'Authorization: Bearer bmsbsecret2025' | jq",
     "test-price-update": "curl -X POST http://localhost:3000/api/cron/update-prices -H 'Authorization: Bearer bmsbsecret2025' | jq",
     "test-top-150-update": "curl -X POST http://localhost:3000/api/admin/update-top-150 -H 'Authorization: Bearer bmsbsecret2025' | jq",
-    "populate-missing-bmsb": "node scripts/populate-missing-bmsb-data.js"
+    "populate-missing-bmsb": "node scripts/populate-missing-bmsb-data.js",
+    "twitter-bot": "tsx scripts/twitter-bot.ts",
+    "twitter-bot:daily": "tsx scripts/twitter-bot.ts daily",
+    "twitter-bot:alerts": "tsx scripts/twitter-bot.ts alerts",
+    "twitter-bot:daemon": "tsx scripts/twitter-bot-daemon.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -41,14 +45,18 @@
     "dotenv": "^16.4.5",
     "lucide-react": "^0.518.0",
     "next": "^15.3.4",
+    "node-cron": "^3.0.3",
     "node-fetch": "^2.7.0",
+    "puppeteer": "^22.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "twitter-api-v2": "^1.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.18",
