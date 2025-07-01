@@ -269,13 +269,29 @@ export class TargetedScreenshotService {
           
           // Find price element - look for price patterns
           const priceEl = ticker.querySelector('.text-right') || ticker.querySelector('[class*="price"]');
-          let price = priceEl?.textContent?.trim() || '';
+          let fullPriceText = priceEl?.textContent?.trim() || '';
           
-          // Clean up price to just show the dollar amount
-          if (price.includes('$')) {
-            price = price.split('$')[1]?.split(' ')[0] || price;
-            price = '$' + price;
+          // Extract price and position text separately
+          let price = '';
+          let positionText = '';
+          
+          // Look for price pattern (starts with $)
+          const priceMatch = fullPriceText.match(/\$[\d.,]+/);
+          if (priceMatch) {
+            price = priceMatch[0];
           }
+          
+          // Look for position text (ABOVE, BELOW, IN BAND)
+          if (fullPriceText.includes('ABOVE')) {
+            positionText = 'ABOVE';
+          } else if (fullPriceText.includes('BELOW')) {
+            positionText = 'BELOW';
+          } else if (fullPriceText.includes('IN BAND')) {
+            positionText = 'IN BAND';
+          }
+          
+          // Combine for display purposes
+          const displayPrice = positionText ? `${price} ${positionText}` : price;
           
           // Find BMSB status element
           const bmsbEl = ticker.querySelector('.bg-green-500, .bg-red-500, .bg-yellow-500, .bg-orange-500');
@@ -285,7 +301,7 @@ export class TargetedScreenshotService {
             rank: index + 1,
             symbol: symbol,
             fullName: fullName,
-            price: price,
+            price: displayPrice,
             bmsb: bmsbText,
             bmsbColor: bmsbEl?.classList.contains('bg-green-500') ? '#10b981' :
                       bmsbEl?.classList.contains('bg-red-500') ? '#ef4444' :
@@ -437,9 +453,20 @@ export class TargetedScreenshotService {
             white-space: nowrap;
           `;
           
-          // PRICE
-          const bmsbText = ticker.price.includes('ABOVE') ? ' ABOVE' : ticker.price.includes('BELOW') ? ' BELOW' : '';
-          const cleanPrice = ticker.price.replace('ABOVE', '').replace('BELOW', '');
+          // PRICE - extract position text from price field
+          let positionText = '';
+          let cleanPrice = ticker.price;
+          
+          if (ticker.price.includes('ABOVE')) {
+            positionText = ' ABOVE';
+            cleanPrice = ticker.price.replace('ABOVE', '').trim();
+          } else if (ticker.price.includes('BELOW')) {
+            positionText = ' BELOW';
+            cleanPrice = ticker.price.replace('BELOW', '').trim();
+          } else if (ticker.price.includes('IN BAND')) {
+            positionText = ' IN BAND';
+            cleanPrice = ticker.price.replace('IN BAND', '').trim();
+          }
           const priceEl = document.createElement('div');
           priceEl.textContent = cleanPrice;
           priceEl.style.cssText = `
@@ -459,7 +486,7 @@ export class TargetedScreenshotService {
           `;
           
           const bmsbText_el = document.createElement('span');
-          bmsbText_el.textContent = bmsbText.trim();
+          bmsbText_el.textContent = positionText.trim();
           bmsbText_el.style.cssText = `
             font-size: 0.7rem;
             color: #9ca3af;
@@ -756,13 +783,29 @@ export class TargetedScreenshotService {
           
           // Find price element - look for price patterns
           const priceEl = ticker.querySelector('.text-right') || ticker.querySelector('[class*="price"]');
-          let price = priceEl?.textContent?.trim() || '';
+          let fullPriceText = priceEl?.textContent?.trim() || '';
           
-          // Clean up price to just show the dollar amount
-          if (price.includes('$')) {
-            price = price.split('$')[1]?.split(' ')[0] || price;
-            price = '$' + price;
+          // Extract price and position text separately
+          let price = '';
+          let positionText = '';
+          
+          // Look for price pattern (starts with $)
+          const priceMatch = fullPriceText.match(/\$[\d.,]+/);
+          if (priceMatch) {
+            price = priceMatch[0];
           }
+          
+          // Look for position text (ABOVE, BELOW, IN BAND)
+          if (fullPriceText.includes('ABOVE')) {
+            positionText = 'ABOVE';
+          } else if (fullPriceText.includes('BELOW')) {
+            positionText = 'BELOW';
+          } else if (fullPriceText.includes('IN BAND')) {
+            positionText = 'IN BAND';
+          }
+          
+          // Combine for display purposes
+          const displayPrice = positionText ? `${price} ${positionText}` : price;
           
           // Find BMSB status element
           const bmsbEl = ticker.querySelector('.bg-green-500, .bg-red-500, .bg-yellow-500, .bg-orange-500');
@@ -773,7 +816,7 @@ export class TargetedScreenshotService {
             rank: index + 1,
             symbol: symbol,
             fullName: fullName,
-            price: price,
+            price: displayPrice,
             bmsb: bmsbText,
             bmsbColor: bmsbEl?.classList.contains('bg-green-500') ? '#10b981' :
                       bmsbEl?.classList.contains('bg-red-500') ? '#ef4444' :
@@ -929,9 +972,20 @@ export class TargetedScreenshotService {
             white-space: nowrap;
           `;
           
-          // PRICE
-          const bmsbText = ticker.price.includes('ABOVE') ? ' ABOVE' : ticker.price.includes('BELOW') ? ' BELOW' : '';
-          const cleanPrice = ticker.price.replace('ABOVE', '').replace('BELOW', '');
+          // PRICE - extract position text from price field
+          let positionText = '';
+          let cleanPrice = ticker.price;
+          
+          if (ticker.price.includes('ABOVE')) {
+            positionText = ' ABOVE';
+            cleanPrice = ticker.price.replace('ABOVE', '').trim();
+          } else if (ticker.price.includes('BELOW')) {
+            positionText = ' BELOW';
+            cleanPrice = ticker.price.replace('BELOW', '').trim();
+          } else if (ticker.price.includes('IN BAND')) {
+            positionText = ' IN BAND';
+            cleanPrice = ticker.price.replace('IN BAND', '').trim();
+          }
           const priceEl = document.createElement('div');
           priceEl.textContent = cleanPrice;
           priceEl.style.cssText = `
@@ -951,7 +1005,7 @@ export class TargetedScreenshotService {
           `;
           
           const bmsbText_el = document.createElement('span');
-          bmsbText_el.textContent = bmsbText.trim();
+          bmsbText_el.textContent = positionText.trim();
           bmsbText_el.style.cssText = `
             font-size: 0.7rem;
             color: #9ca3af;

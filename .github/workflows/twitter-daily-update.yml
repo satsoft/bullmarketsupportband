@@ -1,13 +1,13 @@
-name: Twitter Health Alerts
+name: Twitter Daily Market Update
 
 on:
   schedule:
-    # Run 15 minutes after BMSB calculations (which run at :05)
-    - cron: '20 * * * *'
+    # Run daily at 12:00 PM UTC
+    - cron: '0 12 * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
-  health-alerts:
+  daily-update:
     runs-on: ubuntu-latest
     
     steps:
@@ -36,7 +36,7 @@ jobs:
           libxss1 \
           libasound2
       
-    - name: Post Health Change Alerts
+    - name: Post Daily Market Update
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -47,17 +47,17 @@ jobs:
         TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
         NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
       run: |
-        echo "🔔 Checking for token health changes..."
+        echo "📊 Posting daily market update..."
         echo "Environment check:"
         echo "- TWITTER_API_KEY: ${TWITTER_API_KEY:0:10}..."
         echo "- NEXT_PUBLIC_BASE_URL: $NEXT_PUBLIC_BASE_URL"
         echo "- Node version: $(node --version)"
-        echo "Starting health alerts script..."
-        npx tsx scripts/twitter-health-alerts.ts
-        echo "✅ Health alerts check completed at $(date)"
+        echo "Starting daily update script..."
+        npm run twitter-bot:daily
+        echo "✅ Daily market update completed at $(date)"
       
     - name: Log Failure
       if: failure()
       run: |
-        echo "❌ Health alerts failed at $(date)"
+        echo "❌ Daily market update failed at $(date)"
         exit 1
