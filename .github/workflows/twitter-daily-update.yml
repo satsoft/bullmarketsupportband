@@ -21,20 +21,10 @@ jobs:
         cache: 'npm'
         
     - name: Install Dependencies
-      run: |
-        npm ci
-        # Install additional dependencies for Puppeteer in headless environment
-        sudo apt-get update
-        sudo apt-get install -y \
-          libnss3 \
-          libatk-bridge2.0-0 \
-          libdrm2 \
-          libxcomposite1 \
-          libxdamage1 \
-          libxrandr2 \
-          libgbm1 \
-          libxss1 \
-          libasound2
+      run: npm ci
+      
+    - name: Setup Chrome/Puppeteer
+      uses: browser-actions/setup-chrome@v1
       
     - name: Post Daily Market Update
       env:
