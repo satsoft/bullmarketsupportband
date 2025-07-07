@@ -9,6 +9,7 @@ on:
 jobs:
   daily-update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Prevent hanging workflows
     
     steps:
     - name: Checkout Repository

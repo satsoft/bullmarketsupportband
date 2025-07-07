@@ -9,6 +9,7 @@ on:
 jobs:
   health-alerts:
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Prevent hanging workflows
     
     steps:
     - name: Checkout Repository

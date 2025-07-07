@@ -449,8 +449,13 @@ The Bull Market Support Band analysis shows that this token's moving averages ar
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://bullmarketsupportband.com';
       
-      // Get screenshot and tweet data
-      const result = await TargetedScreenshotService.captureTop10WithData(baseUrl);
+      // Get screenshot and tweet data with timeout to prevent hanging
+      const result = await Promise.race([
+        TargetedScreenshotService.captureTop10WithData(baseUrl),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Screenshot capture timeout after 10 minutes')), 10 * 60 * 1000)
+        )
+      ]) as any;
       
       // Generate tweet text based on actual market data
       const tweetText = `Here is your daily market update 👇

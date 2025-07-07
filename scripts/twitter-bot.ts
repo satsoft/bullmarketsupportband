@@ -147,6 +147,9 @@ async function main(): Promise<void> {
       console.error('Usage: tsx scripts/twitter-bot.ts [daily|alerts|all]');
       process.exit(1);
   }
+  
+  // Force exit after successful completion
+  process.exit(0);
 }
 
 // Handle uncaught errors
