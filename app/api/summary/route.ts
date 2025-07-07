@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { checkRateLimit } from '@/lib/auth';
+import { cache, CACHE_DURATION } from '@/lib/cache';
 
 export async function GET(request: NextRequest) {
   // Apply rate limiting for public API
@@ -14,6 +15,19 @@ export async function GET(request: NextRequest) {
     );
   }
   try {
+    // Check cache first
+    const cacheKey = 'summary-data';
+    const cachedData = cache.get(cacheKey);
+    if (cachedData) {
+      return NextResponse.json(cachedData, {
+        headers: {
+          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
+          'X-RateLimit-Reset': rateLimit.resetTime.toString(),
+          'X-Cache': 'HIT'
+        }
+      });
+    }
+
     // Get summary statistics
     const { data: totalCryptos } = await supabaseAdmin
       .from('cryptocurrencies')
@@ -23,7 +37,8 @@ export async function GET(request: NextRequest) {
     const { data: bmsbData } = await supabaseAdmin
       .from('bmsb_calculations')
       .select('band_health')
-      .gte('calculation_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]); // Last 7 days
+      .gte('calculation_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]) // Last 7 days
+      .limit(1000); // Limit to 1000 most recent calculations
 
     // Count band health statuses
     const healthCounts = bmsbData?.reduce((acc, calc) => {
@@ -70,14 +85,20 @@ export async function GET(request: NextRequest) {
       }
     };
 
-    return NextResponse.json({
+    const responseData = {
       success: true,
       data: summary,
       timestamp: new Date().toISOString()
-    }, {
+    };
+
+    // Cache the response
+    cache.set(cacheKey, responseData, CACHE_DURATION.SUMMARY);
+
+    return NextResponse.json(responseData, {
       headers: {
         'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-        'X-RateLimit-Reset': rateLimit.resetTime.toString()
+        'X-RateLimit-Reset': rateLimit.resetTime.toString(),
+        'X-Cache': 'MISS'
       }
     });
     

@@ -2,8 +2,8 @@ name: Twitter Health Alerts
 
 on:
   schedule:
-    # Run 15 minutes after BMSB calculations (which run at :05)
-    - cron: '20 * * * *'
+    # Run every 2 hours to reduce bandwidth usage (at 20 minutes past even hours)
+    - cron: '20 */2 * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:

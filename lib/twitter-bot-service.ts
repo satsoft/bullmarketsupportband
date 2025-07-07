@@ -2,6 +2,7 @@ import { TwitterApi } from 'twitter-api-v2';
 import { supabaseAdmin } from './supabase';
 import { BMSBApiResponse, Ticker } from '../app/types';
 import { TargetedScreenshotService } from './targeted-screenshot-service';
+import { cache, CACHE_DURATION } from './cache';
 
 export interface MarketSummary {
   totalTokens: number;
@@ -72,18 +73,28 @@ export class TwitterBotService {
    * Check for token health status changes
    */
   async detectHealthChanges(): Promise<TokenHealthChange[]> {
-    // Get all tokens with health data to check for changes
+    // Check cache first to reduce database hits
+    const cacheKey = 'health-changes';
+    const cachedChanges = cache.get<TokenHealthChange[]>(cacheKey);
+    if (cachedChanges) {
+      console.log('Using cached health changes');
+      return cachedChanges;
+    }
+
+    // Get all tokens with health data to check for changes (limit to top 200 for efficiency)
     const { data: allTokens } = await supabaseAdmin
       .from('bmsb_calculations')
       .select(`
         cryptocurrencies!inner (
           id, symbol, name, is_stablecoin, 
-          price_change_percentage_24h, current_price
+          price_change_percentage_24h, current_price, current_rank
         ),
         band_health, previous_health
       `)
       .eq('cryptocurrencies.is_stablecoin', false)
-      .not('band_health', 'is', null);
+      .not('band_health', 'is', null)
+      .lte('cryptocurrencies.current_rank', 200) // Only check top 200 tokens
+      .limit(200);
 
     if (!allTokens || allTokens.length === 0) {
       return [];
@@ -136,6 +147,9 @@ export class TwitterBotService {
           .eq('cryptocurrency_id', targetRow.cryptocurrencies.id);
       }
     }
+    
+    // Cache the changes for 1 minute to reduce repeated queries
+    cache.set(cacheKey, changes, CACHE_DURATION.HEALTH_CHANGES);
     
     return changes;
   }

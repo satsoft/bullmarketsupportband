@@ -8,11 +8,15 @@ export class DatabaseBMSBCalculator {
     try {
       console.log(`📊 Calculating BMSB for ${symbol} using stored database data...`);
       
-      // Get daily price data from database (need at least 21 weeks of same-day data)
+      // Get daily price data from database (limit to last 365 days for efficiency)
+      const oneYearAgo = new Date();
+      oneYearAgo.setDate(oneYearAgo.getDate() - 365);
+      
       const { data: dailyPrices, error } = await supabaseAdmin
         .from('daily_prices')
         .select('date, close_price')
         .eq('cryptocurrency_id', cryptocurrencyId)
+        .gte('date', oneYearAgo.toISOString().split('T')[0])
         .order('date', { ascending: true });
 
       if (error) {

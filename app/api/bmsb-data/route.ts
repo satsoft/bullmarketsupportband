@@ -4,6 +4,7 @@ import { Ticker } from '@/app/types';
 import exchangeChecker from '@/lib/exchange-checker';
 import { getAllExcludedTokens, shouldExcludeToken } from '@/lib/token-filters';
 import { checkRateLimit } from '@/lib/auth';
+import { cache, CACHE_DURATION } from '@/lib/cache';
 
 export interface BMSBApiResponse {
   id: string;
@@ -37,6 +38,20 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '100');
+    
+    // Check cache first
+    const cacheKey = `bmsb-data-${limit}`;
+    const cachedData = cache.get(cacheKey);
+    if (cachedData) {
+      console.log(`Cache hit for BMSB data (limit: ${limit})`);
+      return NextResponse.json(cachedData, {
+        headers: {
+          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
+          'X-RateLimit-Reset': rateLimit.resetTime.toString(),
+          'X-Cache': 'HIT'
+        }
+      });
+    }
     
     console.log(`Fetching BMSB data for top ${limit} cryptocurrencies (excluding derivative tokens)...`);
 
@@ -105,19 +120,21 @@ export async function GET(request: NextRequest) {
     const cryptoIds = eligibleCryptos.map(c => c.id);
     
     
-    // Get latest BMSB calculations for all cryptocurrencies
+    // Get latest BMSB calculations for all cryptocurrencies (limit to latest record per token)
     const { data: bmsbCalculations } = await supabaseAdmin
       .from('bmsb_calculations')
       .select('*')
       .in('cryptocurrency_id', cryptoIds)
-      .order('calculation_date', { ascending: false });
+      .order('calculation_date', { ascending: false })
+      .limit(cryptoIds.length); // Only get latest calculation per token
 
-    // Get latest daily prices for all cryptocurrencies
+    // Get latest daily prices for all cryptocurrencies (limit to latest price per token)
     const { data: dailyPrices } = await supabaseAdmin
       .from('daily_prices')
       .select('cryptocurrency_id, close_price, date')
       .in('cryptocurrency_id', cryptoIds)
-      .order('date', { ascending: false });
+      .order('date', { ascending: false })
+      .limit(cryptoIds.length); // Only get latest price per token
 
     // Get exchange mappings for all cryptocurrencies
     const { data: exchangeMappings } = await supabaseAdmin
@@ -309,7 +326,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
+    const responseData = {
       success: true,
       data: finalBmsbData,
       count: finalBmsbData.length,
@@ -319,10 +336,16 @@ export async function GET(request: NextRequest) {
         excluded_token_types: ['stablecoins', 'wrapped_tokens', 'liquid_staking_tokens', 'liquid_restaking_tokens', 'cross_chain_tokens', 'synthetic_tokens', 'insufficient_data'],
         excluded_tokens: excludedTokens
       }
-    }, {
+    };
+
+    // Cache the response
+    cache.set(cacheKey, responseData, CACHE_DURATION.BMSB_DATA);
+
+    return NextResponse.json(responseData, {
       headers: {
         'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-        'X-RateLimit-Reset': rateLimit.resetTime.toString()
+        'X-RateLimit-Reset': rateLimit.resetTime.toString(),
+        'X-Cache': 'MISS'
       }
     });
     
