@@ -269,7 +269,7 @@ export class TargetedScreenshotService {
           
           // Find price element - look for price patterns
           const priceEl = ticker.querySelector('.text-right') || ticker.querySelector('[class*="price"]');
-          let fullPriceText = priceEl?.textContent?.trim() || '';
+          const fullPriceText = priceEl?.textContent?.trim() || '';
           
           // Extract price and position text separately
           let price = '';
@@ -783,7 +783,7 @@ export class TargetedScreenshotService {
           
           // Find price element - look for price patterns
           const priceEl = ticker.querySelector('.text-right') || ticker.querySelector('[class*="price"]');
-          let fullPriceText = priceEl?.textContent?.trim() || '';
+          const fullPriceText = priceEl?.textContent?.trim() || '';
           
           // Extract price and position text separately
           let price = '';
