@@ -8,7 +8,8 @@ interface CacheEntry<T> {
 }
 
 class MemoryCache {
-  private cache = new Map<string, CacheEntry<unknown>>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private cache = new Map<string, CacheEntry<any>>();
 
   set<T>(key: string, data: T, ttlMs: number): void {
     this.cache.set(key, {
@@ -29,7 +30,7 @@ class MemoryCache {
       return null;
     }
 
-    return entry.data;
+    return entry.data as T;
   }
 
   clear(): void {
