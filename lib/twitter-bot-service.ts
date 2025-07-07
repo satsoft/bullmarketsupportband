@@ -72,8 +72,8 @@ export class TwitterBotService {
    * Check for token health status changes
    */
   async detectHealthChanges(): Promise<TokenHealthChange[]> {
-    // Get tokens with health changes (where current health != previous health)
-    const { data: changedTokens } = await supabaseAdmin
+    // Get all tokens with health data to check for changes
+    const { data: allTokens } = await supabaseAdmin
       .from('bmsb_calculations')
       .select(`
         cryptocurrencies!inner (
@@ -82,10 +82,18 @@ export class TwitterBotService {
         ),
         band_health, previous_health
       `)
-      .neq('band_health', 'previous_health')
       .eq('cryptocurrencies.is_stablecoin', false)
-      .not('band_health', 'is', null)
-      .not('previous_health', 'is', null);
+      .not('band_health', 'is', null);
+
+    if (!allTokens || allTokens.length === 0) {
+      return [];
+    }
+
+    // Filter for tokens where current health != previous health
+    const changedTokens = allTokens.filter(token => 
+      token.band_health !== token.previous_health && 
+      token.previous_health !== null
+    );
 
     if (!changedTokens || changedTokens.length === 0) {
       return [];
