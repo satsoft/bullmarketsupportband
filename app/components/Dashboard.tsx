@@ -227,19 +227,19 @@ export const Dashboard: React.FC = () => {
             style={{ filter: 'none' }}
           />
           <div className="flex-1 space-y-1">
-            {/* Main Header Row */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-1 lg:space-y-0">
-              <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Main Header Row - More compact for ad space */}
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between space-y-1 lg:space-y-0">
+              <div className="flex flex-col lg:flex-row lg:items-center space-y-0.5 lg:space-y-0 lg:space-x-2 sm:space-x-4">
                 <div className="flex items-center space-x-2">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
+                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">BULL MARKET SUPPORT BAND</h1>
                   <BMSBTooltip>
                     <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-gray-400 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors cursor-pointer">
                       <span className="text-[10px] sm:text-xs font-bold">i</span>
                     </div>
                   </BMSBTooltip>
                 </div>
-                <div className="hidden sm:block h-6 w-px bg-gray-700"></div>
-                <div className="hidden sm:block text-lg lg:text-xl text-gray-400">
+                <div className="hidden lg:block h-4 w-px bg-gray-700"></div>
+                <div className="text-xs text-gray-400">
                   CRYPTO MONITORING SYSTEM
                 </div>
               </div>
@@ -270,8 +270,8 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             
-            {/* Status Bar Row */}
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between text-xs text-gray-500 space-y-1 sm:space-y-0">
+            {/* Status Bar and Ad Row - Allow ad to span full vertical space */}
+            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between xl:gap-6 text-xs text-gray-500 space-y-2 xl:space-y-0 mt-1">
               <div className="flex items-center flex-wrap gap-4 sm:gap-6">
                 <span>
                   <ExclusionTooltip excludedTokens={excludedTokens}>
@@ -299,7 +299,34 @@ export const Dashboard: React.FC = () => {
                   </a>
                 </span>
               </div>
-              <div className="flex items-center space-x-4">
+              
+              {/* Desktop Sponsor Ad - Spans upward into first row without affecting spacing */}
+              <div className="hidden xl:flex justify-center items-end flex-1 px-4 relative">
+                <Image 
+                  src="/LIGHTER_AD.png" 
+                  alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+                  width={552} 
+                  height={60} 
+                  className="h-16 2xl:h-20 w-auto max-w-full object-contain absolute bottom-0 transform translate-y-1 2xl:translate-y-2"
+                  priority
+                />
+                {/* Invisible spacer to maintain row height */}
+                <div className="h-6 w-full opacity-0"></div>
+              </div>
+              
+              {/* Medium screens ad - larger version */}
+              <div className="hidden md:flex xl:hidden justify-center flex-1 px-2">
+                <Image 
+                  src="/LIGHTER_AD.png" 
+                  alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+                  width={552} 
+                  height={60} 
+                  className="h-20 lg:h-24 w-auto max-w-full object-contain"
+                  priority
+                />
+              </div>
+              
+              <div className="flex items-center space-x-4 flex-shrink-0">
                 {/* Desktop Search Bar */}
                 <div className="relative">
                   <div className="relative">
@@ -497,6 +524,18 @@ export const Dashboard: React.FC = () => {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Mobile Sponsor Ad - Outside header container for full width */}
+      <div className="md:hidden bg-gray-900 border-b border-gray-800 py-4">
+        <Image 
+          src="/LIGHTER_AD.png" 
+          alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+          width={1000} 
+          height={120} 
+          className="h-24 sm:h-28 w-screen object-contain"
+          priority
+        />
       </div>
 
       {/* Favorites Bar */}
