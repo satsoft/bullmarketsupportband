@@ -302,28 +302,41 @@ export const Dashboard: React.FC = () => {
               
               {/* Desktop Sponsor Ad - Spans upward into first row without affecting spacing */}
               <div className="hidden xl:flex justify-center items-end flex-1 px-4 relative">
-                <Image 
-                  src="/LIGHTER_AD.png" 
-                  alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
-                  width={552} 
-                  height={60} 
-                  className="h-16 2xl:h-20 w-auto max-w-full object-contain absolute bottom-0 transform translate-y-1 2xl:translate-y-2"
-                  priority
-                />
+                <a 
+                  href="https://app.lighter.xyz/trade/BTC?referral=EAG2CXLJVQBU" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute bottom-0 transform translate-y-1 2xl:translate-y-2"
+                >
+                  <Image 
+                    src="/LIGHTER_AD.png" 
+                    alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+                    width={552} 
+                    height={60} 
+                    className="h-16 2xl:h-20 w-auto max-w-full object-contain"
+                    priority
+                  />
+                </a>
                 {/* Invisible spacer to maintain row height */}
                 <div className="h-6 w-full opacity-0"></div>
               </div>
               
               {/* Medium screens ad - larger version */}
               <div className="hidden md:flex xl:hidden justify-center flex-1 px-2">
-                <Image 
-                  src="/LIGHTER_AD.png" 
-                  alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
-                  width={552} 
-                  height={60} 
-                  className="h-20 lg:h-24 w-auto max-w-full object-contain"
-                  priority
-                />
+                <a 
+                  href="https://app.lighter.xyz/trade/BTC?referral=EAG2CXLJVQBU" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <Image 
+                    src="/LIGHTER_AD.png" 
+                    alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+                    width={552} 
+                    height={60} 
+                    className="h-20 lg:h-24 w-auto max-w-full object-contain"
+                    priority
+                  />
+                </a>
               </div>
               
               <div className="flex items-center space-x-4 flex-shrink-0">
@@ -528,14 +541,21 @@ export const Dashboard: React.FC = () => {
 
       {/* Mobile Sponsor Ad - Outside header container for full width */}
       <div className="md:hidden bg-gray-900 border-b border-gray-800 py-4">
-        <Image 
-          src="/LIGHTER_AD.png" 
-          alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
-          width={1000} 
-          height={120} 
-          className="h-24 sm:h-28 w-screen object-contain"
-          priority
-        />
+        <a 
+          href="https://app.lighter.xyz/trade/BTC?referral=EAG2CXLJVQBU" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block"
+        >
+          <Image 
+            src="/LIGHTER_AD.png" 
+            alt="Lighter - Trade perpetuals with unmatched efficiency and fairness. Zero fees, #2 perp volume airdrop soon. Invite-only." 
+            width={1000} 
+            height={120} 
+            className="h-24 sm:h-28 w-screen object-contain"
+            priority
+          />
+        </a>
       </div>
 
       {/* Favorites Bar */}
