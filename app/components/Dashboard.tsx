@@ -303,7 +303,7 @@ export const Dashboard: React.FC = () => {
               {/* Desktop Sponsor Ad - Spans upward into first row without affecting spacing */}
               <div className="hidden xl:flex justify-center items-end flex-1 px-4 relative">
                 <a 
-                  href="https://app.lighter.xyz/trade/ETH?referral=1WMZK2YRQ4JU" 
+                  href="https://app.lighter.xyz/trade/ETH?referral=3MNP79F35MHG" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="absolute bottom-0 transform translate-y-1 2xl:translate-y-2"
@@ -324,7 +324,7 @@ export const Dashboard: React.FC = () => {
               {/* Medium screens ad - larger version */}
               <div className="hidden md:flex xl:hidden justify-center flex-1 px-2">
                 <a 
-                  href="https://app.lighter.xyz/trade/ETH?referral=1WMZK2YRQ4JU" 
+                  href="https://app.lighter.xyz/trade/ETH?referral=3MNP79F35MHG" 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
@@ -542,7 +542,7 @@ export const Dashboard: React.FC = () => {
       {/* Mobile Sponsor Ad - Outside header container for full width */}
       <div className="md:hidden bg-gray-900 border-b border-gray-800 py-4">
         <a 
-          href="https://app.lighter.xyz/trade/ETH?referral=1WMZK2YRQ4JU" 
+          href="https://app.lighter.xyz/trade/ETH?referral=3MNP79F35MHG" 
           target="_blank" 
           rel="noopener noreferrer"
           className="block"
