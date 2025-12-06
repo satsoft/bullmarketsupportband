@@ -1,4 +1,5 @@
 name: Daily Token Discovery & Rankings Update
+# Last refreshed: 2025-12-06
 
 on:
   schedule:
