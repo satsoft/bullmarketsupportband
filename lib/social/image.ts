@@ -6,15 +6,12 @@
  */
 import { socialConfig } from './config';
 
-export async function tickerImage(symbol: string): Promise<Buffer | null> {
-  if (!socialConfig.images) return null;
-  try {
-    const { TargetedScreenshotService } = await import('../targeted-screenshot-service');
-    return await TargetedScreenshotService.captureTickerFocus(socialConfig.siteUrl, symbol);
-  } catch (e) {
-    console.warn(`[image] ticker ${symbol} failed → text-only:`, (e as Error).message);
-    return null;
-  }
+export async function tickerImage(_symbol: string): Promise<Buffer | null> {
+  // Per-asset chart image is currently disabled: captureTickerFocus targets a dashboard
+  // element that no longer renders reliably ("node not visible"). Asset-event posts stay
+  // text-only (graceful) until a dedicated per-asset image is built. Market posts still
+  // get the market-status image via marketImage().
+  return null;
 }
 
 export async function marketImage(): Promise<Buffer | null> {
