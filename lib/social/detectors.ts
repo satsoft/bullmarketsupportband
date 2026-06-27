@@ -37,6 +37,8 @@ export interface DetectionResult {
   stateUpdates: StateUpdate[];
   /** % of assets (with a band) currently above it. */
   pctAbove: number;
+  /** % of assets (with a band) currently below it. */
+  pctBelow: number;
   regime: 'bull' | 'bear';
   regimeFlipped: boolean;
 }
@@ -51,6 +53,7 @@ export function detect(
   const stateUpdates: StateUpdate[] = [];
 
   let above = 0;
+  let below = 0;
   let withPos = 0;
 
   for (const a of snapshot) {
@@ -61,6 +64,7 @@ export function detect(
     if (newPos) {
       withPos++;
       if (newPos === 'above_band') above++;
+      else if (newPos === 'below_band') below++;
     }
 
     const crossUp = prevPos != null && newPos === 'above_band' && prevPos !== 'above_band';
@@ -106,12 +110,13 @@ export function detect(
   }
 
   const pctAbove = withPos ? (above / withPos) * 100 : 0;
+  const pctBelow = withPos ? (below / withPos) * 100 : 0;
   const regime: 'bull' | 'bear' = pctAbove >= 50 ? 'bull' : 'bear';
   const regimeFlipped = prevRegime != null && prevRegime !== regime;
 
   if (regimeFlipped) {
-    events.push({ type: 'regime_flip', priority: 95, data: { pctAbove, regime } });
+    events.push({ type: 'regime_flip', priority: 95, data: { pctAbove, pctBelow, regime } });
   }
 
-  return { events, stateUpdates, pctAbove, regime, regimeFlipped };
+  return { events, stateUpdates, pctAbove, pctBelow, regime, regimeFlipped };
 }

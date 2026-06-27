@@ -124,12 +124,12 @@ export async function runSocial(mode: Mode): Promise<void> {
       await data.saveMarketState(det.pctAbove, det.regime);
     }
   } else if (mode === 'daily') {
-    const text = composeDailySnapshot(snapshot, det.pctAbove, det.regime);
+    const text = composeDailySnapshot(snapshot, det.pctAbove, det.pctBelow, det.regime);
     const image = await marketImage();
     await emit('daily_snapshot', null, text, image, `${socialConfig.siteUrl}/market-breadth`);
     if (live) await data.saveMarketState(det.pctAbove, det.regime);
   } else if (mode === 'weekly') {
-    const tweets = composeWeeklyOverview(snapshot, states, det.pctAbove, det.regime, now.getTime());
+    const tweets = composeWeeklyOverview(snapshot, states, det.pctAbove, det.pctBelow, det.regime, now.getTime());
     const regimeImg = await marketImage();
     for (let i = 0; i < tweets.length; i++) {
       const t = tweets[i];
