@@ -22,7 +22,8 @@ export function fmtPrice(n: number | null): string {
 }
 function pct(n: number | null): string {
   if (n == null) return 'N/A';
-  return `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`;
+  const r = Math.round(n * 10) / 10; // round first so tiny moves don't show "-0.0%"
+  return `${r > 0 ? '+' : r < 0 ? '-' : ''}${Math.abs(r).toFixed(1)}%`;
 }
 function posWord(p: Position | null): string {
   return p === 'above_band' ? 'above' : p === 'below_band' ? 'below' : p === 'in_band' ? 'inside' : 'near';

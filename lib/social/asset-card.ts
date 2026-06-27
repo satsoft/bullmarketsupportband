@@ -21,9 +21,10 @@ function buildHtml(a: AssetSnapshot): string {
   const pos = a.position;
   const color = pos === 'above_band' ? '#10b981' : pos === 'below_band' ? '#ef4444' : '#f59e0b';
   const posLabel = pos === 'above_band' ? 'ABOVE BAND' : pos === 'below_band' ? 'BELOW BAND' : pos === 'in_band' ? 'IN BAND' : '—';
-  const chg = a.change24h;
-  const chgColor = chg != null && chg >= 0 ? '#10b981' : '#ef4444';
-  const chgText = chg != null ? `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}% (24h)` : '';
+  // Round first so a near-zero change reads as flat (neutral), not "-0.00%" in red.
+  const chgR = a.change24h != null ? Math.round(a.change24h * 100) / 100 : null;
+  const chgColor = chgR == null || chgR === 0 ? '#9ca3af' : chgR > 0 ? '#10b981' : '#ef4444';
+  const chgText = chgR != null ? `${chgR > 0 ? '+' : chgR < 0 ? '−' : ''}${Math.abs(chgR).toFixed(2)}% (24h)` : '';
 
   return `<!doctype html><html><head><meta charset="utf-8"><style>
   * { margin:0; padding:0; box-sizing:border-box; }
