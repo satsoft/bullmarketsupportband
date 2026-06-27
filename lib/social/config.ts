@@ -28,6 +28,13 @@ export const socialConfig = {
   /** Attempt chart images (best-effort; falls back to text-only on any failure). */
   images: process.env.SOCIAL_IMAGES !== 'false',
 
+  /**
+   * Add a self-reply link to posts. OFF by default: each X post costs ~$0.015 (pay-
+   * per-use), so a reply link DOUBLES that post's cost, and SEO already drives traffic.
+   * Enable with SOCIAL_REPLY_LINKS=true to trade extra cost for click-through.
+   */
+  replyLinks: process.env.SOCIAL_REPLY_LINKS === 'true',
+
   /** Canonical site URL (used only for optional self-reply links). */
   siteUrl:
     process.env.SOCIAL_SITE_URL ||

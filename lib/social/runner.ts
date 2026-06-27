@@ -68,7 +68,8 @@ export async function runSocial(mode: Mode): Promise<void> {
     }
     try {
       const id = await poster!.tweet(text, image);
-      if (replyLink) {
+      // Reply links are opt-in (SOCIAL_REPLY_LINKS=true) — each reply is a billable 2nd tweet.
+      if (replyLink && socialConfig.replyLinks) {
         try {
           await poster!.reply(replyLink, id);
         } catch (e) {
