@@ -34,7 +34,11 @@
     "twitter-bot": "tsx scripts/twitter-bot.ts",
     "twitter-bot:daily": "tsx scripts/twitter-bot.ts daily",
     "twitter-bot:alerts": "tsx scripts/twitter-bot.ts alerts",
-    "twitter-bot:daemon": "tsx scripts/twitter-bot-daemon.ts"
+    "twitter-bot:daemon": "tsx scripts/twitter-bot-daemon.ts",
+    "backfill-handles": "tsx scripts/backfill-twitter-handles.ts",
+    "social:intraday": "tsx scripts/social-bot.ts intraday",
+    "social:daily": "tsx scripts/social-bot.ts daily",
+    "social:weekly": "tsx scripts/social-bot.ts weekly"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
