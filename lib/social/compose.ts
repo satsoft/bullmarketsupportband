@@ -71,11 +71,12 @@ export function composeEvent(ev: SocialEvent): string | null {
 export function composeDailySnapshot(snapshot: AssetSnapshot[], pctAbove: number, regime: 'bull' | 'bear'): string {
   const emoji = regime === 'bull' ? '🟢' : '🔴';
   // Rank-gate movers to top-50 so we surface meaningful names, not micro-cap noise.
+  // X allows only ONE cashtag per post, so the mover list uses plain symbols (no $).
   const movers = [...snapshot]
     .filter((a) => a.change24h != null && (a.rank ?? 9999) <= 50)
     .sort((a, b) => Math.abs(b.change24h!) - Math.abs(a.change24h!))
     .slice(0, 3)
-    .map((a) => `${cashtag(a.symbol)} ${pct(a.change24h)}`)
+    .map((a) => `${a.symbol.toUpperCase()} ${pct(a.change24h)}`)
     .join(' · ');
   let t = `📊 Bull Market Support Band — Daily\n\n${emoji} ${pctAbove.toFixed(0)}% of the top 100 are above their band (${regime === 'bull' ? 'bullish' : 'bearish'})`;
   if (movers) t += `\n\nMovers (24h): ${movers}`;
@@ -120,12 +121,18 @@ export function composeWeeklyOverview(
 }
 
 function list(header: string, assets: AssetSnapshot[]): string {
+  // X allows only ONE cashtag per post, so lists use @handle (drives reshares) or the
+  // plain symbol when no handle — never $cashtags. Capped to ~6 to avoid spam flags.
   const tail = `\n\n#BMSB #crypto`;
   let body = '';
+  let count = 0;
   for (const a of assets) {
-    const entry = `\n${cashtag(a.symbol)}${mention(a.handle)}`;
+    if (count >= 6) break;
+    const label = a.handle ? `@${a.handle}` : a.symbol.toUpperCase();
+    const entry = `\n${label}`;
     if ((header + body + entry + tail).length > MAX) break;
     body += entry;
+    count++;
   }
   return `${header}${body}${tail}`;
 }
