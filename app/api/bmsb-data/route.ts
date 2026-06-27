@@ -306,6 +306,11 @@ export async function GET(request: NextRequest) {
           });
           
           if (exclusion.exclude) {
+            // Hide redundant duplicate-gold tokens (e.g. PAXG when XAUT is the shown
+            // gold representative) from the excluded panel entirely.
+            if (exclusion.reason === 'gold_token_lower_rank' || exclusion.reason === 'gold_token_default_exclude') {
+              return;
+            }
             excludedTokens.push({
               symbol: token.symbol,
               category: exclusion.reason || 'unknown'

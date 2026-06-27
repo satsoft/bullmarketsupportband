@@ -116,14 +116,14 @@ export function shouldExcludeToken(token: {
       }
     }
     
-    // Fallback logic when allTokens is not provided or incomplete
-    // For PAXG: if it's marked as stablecoin in DB, we need to override that and include it
+    // Fallback logic when allTokens is not provided or incomplete.
+    // XAUT is the chosen gold representative (higher market cap), so PAXG is the
+    // redundant duplicate and is always excluded; XAUT is included by default.
     if (symbol === 'PAXG') {
-      return { exclude: false }; // Include PAXG (override stablecoin status)
+      return { exclude: true, reason: 'gold_token_lower_rank' };
     }
-    // For XAUT: exclude by default unless it becomes the higher-ranked one
     if (symbol === 'XAUT') {
-      return { exclude: true, reason: 'gold_token_default_exclude' };
+      return { exclude: false }; // Include XAUT as the gold token
     }
   }
   
