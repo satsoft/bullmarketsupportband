@@ -2,8 +2,30 @@
 
 _Phase 10 deliverable. Companion to `SEO_ANALYSIS.md` (read that first). Prioritized rollout._
 
-**Status:** PROPOSAL — awaiting approval.
-**Hard rule:** **Do not implement Priority 2 or Priority 3 until the user approves this plan.** Priority 1 items are individually low-risk; still confirm before starting.
+**Status:** ✅ IMPLEMENTED (2026-06-27) — Priority 1, Priority 2, and the non-gated Priority 3 page shipped to production. GSC-demand-gated P3 items remain deferred by design (see below).
+
+**Completion checklist:**
+- [x] 1.2 Sitemap consolidated (single dynamic `app/sitemap.ts`, www host, real pages only; deleted static `app/sitemap.xml` + dead `vercel.json` rewrite)
+- [x] 1.3 Canonical tags added; standardized on **www** (layout, page, sitemap, robots)
+- [x] 1.5 SSR homepage intro block (in initial HTML, below the dashboard)
+- [x] 1.6 `/what-is-the-bull-market-support-band` (overview + visible FAQ + `FAQPage` schema)
+- [x] 1.7 `/methodology`
+- [x] 1.8 Thin `test-*` pages removed
+- [x] 1.9 Soft-404 fixed (`[ticker]` now `notFound()` for unknown paths)
+- [x] 1.10 Internal linking (`SiteFooterNav` on every content/asset page; homepage intro links)
+- [x] 1.11 Structured data synced (`WebSite`/`Organization` added; "10 min" → "15 min")
+- [x] P2 SSR asset pages `/{asset}-bull-market-support-band` (9 majors, values in initial HTML, unique meta, ISR 15m); `/btc`-style symbol URLs **308-redirect** to canonical slug; in sitemap + nav
+- [x] P3 `/market-breadth` page
+- [ ] 1.1 GSC verification — **needs your verification code** (wired to `GOOGLE_SITE_VERIFICATION` env var; see "Open items")
+- [ ] 1.4 apex→www **permanent** redirect — **Vercel dashboard toggle** (currently 307; see "Open items")
+
+**Open items requiring you:**
+1. **Google Search Console:** verify the property, then set `GOOGLE_SITE_VERIFICATION=<code>` in Vercel env (the meta tag emits automatically). Submit `https://www.bullmarketsupportband.com/sitemap.xml`.
+2. **apex→www redirect:** in Vercel → Project → Domains, set the apex (`bullmarketsupportband.com`) redirect to **permanent (308)**. (Symbol→slug redirects are already 308 in code.)
+
+---
+
+_Original plan retained below for reference._
 
 Effort = rough build size · Confidence = likelihood it helps without downside · Risk = chance of regressing something live.
 

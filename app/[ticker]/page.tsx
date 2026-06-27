@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import TradingViewChart from '../components/TradingViewChart';
 import { SiteFooterNav } from '../components/SiteFooterNav';
@@ -64,7 +64,7 @@ export default async function TickerPage({
   if (!asset) {
     // 2) Bare symbol or slug base for a known asset -> redirect to canonical slug.
     const redirectTarget = assetFromSymbolOrSlug(ticker);
-    if (redirectTarget) redirect(assetPath(redirectTarget));
+    if (redirectTarget) permanentRedirect(assetPath(redirectTarget));
     // 3) Anything else -> real 404 (fixes the previous soft-404 behavior).
     notFound();
   }
