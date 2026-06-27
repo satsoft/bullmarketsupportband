@@ -109,7 +109,7 @@ export async function runSocial(mode: Mode): Promise<void> {
         }
         const text = composeEvent(ev);
         if (!text) continue;
-        const image = a ? await tickerImage(a.symbol) : await marketImage();
+        const image = a ? await tickerImage(a) : await marketImage();
         const replyLink = a ? assetReplyLink(a.symbol) : `${socialConfig.siteUrl}/market-breadth`;
         const ok = await emit(ev.type, a?.symbol ?? null, text, image, replyLink);
         if (ok) {

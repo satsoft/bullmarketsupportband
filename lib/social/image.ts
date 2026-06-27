@@ -5,13 +5,17 @@
  * can't crash the bot at module load.
  */
 import { socialConfig } from './config';
+import type { AssetSnapshot } from './data';
 
-export async function tickerImage(_symbol: string): Promise<Buffer | null> {
-  // Per-asset chart image is currently disabled: captureTickerFocus targets a dashboard
-  // element that no longer renders reliably ("node not visible"). Asset-event posts stay
-  // text-only (graceful) until a dedicated per-asset image is built. Market posts still
-  // get the market-status image via marketImage().
-  return null;
+export async function tickerImage(asset: AssetSnapshot): Promise<Buffer | null> {
+  if (!socialConfig.images) return null;
+  try {
+    const { renderAssetCard } = await import('./asset-card');
+    return await renderAssetCard(asset);
+  } catch (e) {
+    console.warn(`[image] asset card ${asset.symbol} failed → text-only:`, (e as Error).message);
+    return null;
+  }
 }
 
 export async function marketImage(): Promise<Buffer | null> {
