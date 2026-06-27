@@ -51,25 +51,22 @@ class ExchangeChecker {
    */
   private async checkBinance(symbol: string): Promise<{ available: boolean; tradingPair?: string }> {
     try {
-      const tradingPair = `${symbol}USDT`;
-      const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${tradingPair}`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        return { available: !!data.symbol, tradingPair };
+      // Use exchangeInfo and require status === 'TRADING'. The 24hr-ticker endpoint
+      // still returns delisted/halted symbols (e.g. status 'BREAK'), which TradingView
+      // rejects as "symbol doesn't exist" — so a plain existence check false-positives.
+      for (const tradingPair of [`${symbol}USDT`, `${symbol}BTC`]) {
+        const response = await fetch(`https://api.binance.com/api/v3/exchangeInfo?symbol=${tradingPair}`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const match = data.symbols?.find((s: { symbol: string; status: string }) => s.symbol === tradingPair);
+          if (match && match.status === 'TRADING') {
+            return { available: true, tradingPair };
+          }
+        }
       }
-      
-      // Try with BTC pair if USDT fails
-      const btcPair = `${symbol}BTC`;
-      const btcResponse = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${btcPair}`);
-      if (btcResponse.ok) {
-        const btcData = await btcResponse.json();
-        return { available: !!btcData.symbol, tradingPair: btcPair };
-      }
-      
       return { available: false };
     } catch (error) {
       console.error(`Error checking Binance for ${symbol}:`, error);
@@ -463,6 +460,12 @@ class ExchangeChecker {
     
     if (baseSymbol === 'ONDO') {
       return 'CRYPTO:ONDOUSD';
+    }
+
+    // LIT = Lighter. Binance's LITUSDT spot is the delisted Litentry token (status BREAK)
+    // and doesn't exist on TradingView; OKX:LITUSDT is the correct Lighter/USDT spot chart.
+    if (baseSymbol === 'LIT') {
+      return 'OKX:LITUSDT';
     }
     
     if (upperPair.startsWith('PI')) {
