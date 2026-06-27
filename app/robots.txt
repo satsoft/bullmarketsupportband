@@ -2,20 +2,11 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://bullmarketsupportband.com/sitemap.xml
+Sitemap: https://www.bullmarketsupportband.com/sitemap.xml
 
-# Crawl delay for polite crawling
-Crawl-delay: 1
-
-# Block test pages and internal APIs
-Disallow: /test-*
+# Block internal/admin APIs
 Disallow: /api/admin/
 Disallow: /api/cron/
-
-# Allow main API endpoints that provide public data
-Allow: /api/bmsb-data
-Allow: /api/cryptocurrencies
-Allow: /api/summary
 
 # Google Search Console and Bing specific rules
 User-agent: Googlebot

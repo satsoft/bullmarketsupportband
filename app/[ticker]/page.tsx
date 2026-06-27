@@ -1,206 +1,184 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import type { Metadata } from 'next';
+import { notFound, redirect } from 'next/navigation';
+import Link from 'next/link';
 import TradingViewChart from '../components/TradingViewChart';
-import { Ticker } from '../types';
+import { SiteFooterNav } from '../components/SiteFooterNav';
+import { getAssetBMSB } from '../../lib/asset-bmsb';
+import {
+  ASSET_PAGES,
+  ASSET_PAGE_SUFFIX,
+  assetFromSlugSegment,
+  assetFromSymbolOrSlug,
+  assetPath,
+} from '../../lib/asset-pages';
 
-export default function TickerPage() {
-  const params = useParams();
-  const ticker = params.ticker as string;
-  const [tickerData, setTickerData] = useState<Ticker | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// Statically generate the curated asset pages; revalidate values every 15 min (ISR).
+export const revalidate = 900;
 
-  // Helper function to format small prices with subscript notation
-  const formatSmallPriceWithSubscript = (price: number): string => {
-    if (price >= 1) {
-      return price.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
-    
-    // For prices < 1, use scientific notation with subscript
-    const str = price.toExponential(2);
-    const [coefficient, exponent] = str.split('e');
-    const exp = parseInt(exponent);
-    
-    if (exp >= -3) {
-      // For small numbers that don't need subscript, show normal decimal
-      return price.toFixed(Math.abs(exp) + 2);
-    }
-    
-    // Format with subscript for very small numbers
-    return `${parseFloat(coefficient).toFixed(2)}₁₀^${exp}`;
+export function generateStaticParams() {
+  return ASSET_PAGES.map((a) => ({ ticker: `${a.slug}${ASSET_PAGE_SUFFIX}` }));
+}
+
+const SITE = 'https://www.bullmarketsupportband.com';
+
+function fmtPrice(n: number | null): string {
+  if (n == null) return 'N/A';
+  if (n >= 1) return `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (n >= 0.001) return `$${n.toFixed(4)}`;
+  return `$${n.toPrecision(2)}`;
+}
+
+function positionLabel(p: string | null): string {
+  return p === 'above_band' ? 'Above Band' : p === 'below_band' ? 'Below Band' : p === 'in_band' ? 'In Band' : 'N/A';
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ ticker: string }>;
+}): Promise<Metadata> {
+  const { ticker } = await params;
+  const asset = assetFromSlugSegment(ticker);
+  if (!asset) return {};
+  const title = `${asset.name} Bull Market Support Band — Live ${asset.symbol} 20W SMA / 21W EMA`;
+  const description = `Live ${asset.name} (${asset.symbol}) Bull Market Support Band: current price, 20-week SMA, 21-week EMA, band range, and whether ${asset.symbol} is above, inside, or below the band. Updated continuously.`;
+  const url = `${SITE}${assetPath(asset)}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, type: 'website' },
+    twitter: { card: 'summary_large_image', title, description },
+  };
+}
+
+export default async function TickerPage({
+  params,
+}: {
+  params: Promise<{ ticker: string }>;
+}) {
+  const { ticker } = await params;
+
+  // 1) Canonical asset slug -> render the SSR page.
+  const asset = assetFromSlugSegment(ticker);
+  if (!asset) {
+    // 2) Bare symbol or slug base for a known asset -> redirect to canonical slug.
+    const redirectTarget = assetFromSymbolOrSlug(ticker);
+    if (redirectTarget) redirect(assetPath(redirectTarget));
+    // 3) Anything else -> real 404 (fixes the previous soft-404 behavior).
+    notFound();
+  }
+
+  const data = await getAssetBMSB(asset.symbol);
+  if (!data) notFound();
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FinancialProduct',
+    name: `${asset.name} Bull Market Support Band`,
+    description: `Bull Market Support Band analysis for ${asset.name} (${asset.symbol}).`,
+    url: `${SITE}${assetPath(asset)}`,
+    category: 'Cryptocurrency technical analysis',
   };
 
-  useEffect(() => {
-    const fetchTickerData = async () => {
-      try {
-        const response = await fetch('/api/bmsb-data');
-        const data = await response.json();
-        
-        const foundTicker = data.data.find((t: Ticker) => 
-          t.symbol.toLowerCase() === ticker.toLowerCase()
-        );
-        
-        if (foundTicker) {
-          setTickerData(foundTicker);
-        } else {
-          setError(`Ticker ${ticker.toUpperCase()} not found`);
-        }
-      } catch {
-        setError('Failed to load ticker data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (ticker) {
-      fetchTickerData();
-    }
-  }, [ticker]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading {ticker?.toUpperCase()} chart...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !tickerData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-400 mb-4">Error</h1>
-          <p className="text-white">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  const positive = data.change_pct_24h != null && data.change_pct_24h >= 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-6">
-      {/* Ticker Info Header */}
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold text-white mb-3">
-          {tickerData.symbol} - {tickerData.name}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <div className="max-w-2xl mx-auto">
+        <nav className="text-sm text-gray-400 mb-4">
+          <Link href="/" className="hover:text-white">Dashboard</Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-300">{asset.name} BMSB</span>
+        </nav>
+
+        <h1 className="text-3xl font-bold text-white mb-2">
+          {asset.name} ({asset.symbol}) Bull Market Support Band
         </h1>
-        <div className={`inline-flex items-center px-4 py-2 rounded-full text-base font-semibold ${
-          tickerData.band_health === 'healthy' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-        }`}>
-          <div className={`w-3 h-3 rounded-full mr-2 ${
-            tickerData.band_health === 'healthy' ? 'bg-green-500' : 'bg-red-500'
-          }`}></div>
-          BMSB Status: {tickerData.band_health?.toUpperCase()}
+        <p className="text-gray-300 mb-6">
+          Live {asset.name} Bull Market Support Band — the zone between the 20-week simple moving
+          average (SMA) and 21-week exponential moving average (EMA). {asset.blurb}
+        </p>
+
+        {/* Key values — rendered server-side so they appear in the initial HTML */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+          <Stat label="Current Price" value={fmtPrice(data.price)} />
+          <Stat
+            label="24h Change"
+            value={data.change_pct_24h != null ? `${positive ? '+' : ''}${data.change_pct_24h.toFixed(2)}%` : 'N/A'}
+            valueClass={positive ? 'text-green-400' : 'text-red-400'}
+          />
+          <Stat
+            label="Band Status"
+            value={positionLabel(data.price_position)}
+            valueClass={
+              data.price_position === 'above_band'
+                ? 'text-green-400'
+                : data.price_position === 'below_band'
+                ? 'text-red-400'
+                : 'text-yellow-400'
+            }
+          />
+          <Stat label="20W SMA" value={fmtPrice(data.sma_20_week)} sub={data.sma_trend === 'increasing' ? '↗ Rising' : data.sma_trend === 'decreasing' ? '↘ Falling' : undefined} />
+          <Stat label="21W EMA" value={fmtPrice(data.ema_21_week)} sub={data.ema_trend === 'increasing' ? '↗ Rising' : data.ema_trend === 'decreasing' ? '↘ Falling' : undefined} />
+          <Stat
+            label="Band Range"
+            value={`${fmtPrice(data.band_lower)} – ${fmtPrice(data.band_upper)}`}
+          />
+          <Stat
+            label="Distance from Band"
+            value={data.distance_pct != null ? (data.distance_pct === 0 ? 'Inside band' : `${data.distance_pct > 0 ? '+' : ''}${data.distance_pct.toFixed(1)}%`) : 'N/A'}
+          />
+          <Stat label="Band Health" value={data.band_health === 'healthy' ? 'Healthy' : data.band_health === 'weak' ? 'Weak' : 'N/A'} valueClass={data.band_health === 'healthy' ? 'text-green-400' : 'text-red-400'} />
+          <Stat label="Last Updated" value={data.last_updated ?? 'N/A'} />
         </div>
-      </div>
 
-      {/* Chart Popup Container - Replicating the exact popup design */}
-      <div className="max-w-sm mx-auto">
-        <div className="bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
-          {/* TradingView Chart Section */}
-          <div className="bg-gray-800 h-64">
-            <TradingViewChart 
-              symbol={tickerData.symbol} 
-              tradingViewSymbol={tickerData.tradingview_symbol}
-            />
-          </div>
-          
-          {/* BMSB Data Section */}
-          <div className="p-4 bg-gray-900">
-            <div className="text-white text-base font-semibold mb-3">
-              Bull Market Support Band Data
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              {/* 20W SMA */}
-              <div className="bg-gray-700 p-3 rounded">
-                <div className="text-gray-400 mb-1">20W SMA</div>
-                <div className="text-white font-mono">
-                  {tickerData.sma_20_week ? `$${formatSmallPriceWithSubscript(tickerData.sma_20_week)}` : 'N/A'}
-                </div>
-                <div className="flex items-center mt-1">
-                  <span className="text-gray-400 mr-1">Trend:</span>
-                  {tickerData.sma_trend === 'increasing' ? (
-                    <span className="text-green-400 flex items-center">
-                      <span className="mr-1">↗</span>
-                      Rising
-                    </span>
-                  ) : tickerData.sma_trend === 'decreasing' ? (
-                    <span className="text-red-400 flex items-center">
-                      <span className="mr-1">↘</span>
-                      Falling
-                    </span>
-                  ) : (
-                    <span className="text-gray-400">N/A</span>
-                  )}
-                </div>
-              </div>
+        {/* Interactive chart (client island) */}
+        <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-6 h-72">
+          <TradingViewChart symbol={data.symbol} tradingViewSymbol={data.tradingview_symbol} />
+        </div>
 
-              {/* 21W EMA */}
-              <div className="bg-gray-700 p-3 rounded">
-                <div className="text-gray-400 mb-1">21W EMA</div>
-                <div className="text-white font-mono">
-                  {tickerData.ema_21_week ? `$${formatSmallPriceWithSubscript(tickerData.ema_21_week)}` : 'N/A'}
-                </div>
-                <div className="flex items-center mt-1">
-                  <span className="text-gray-400 mr-1">Trend:</span>
-                  {tickerData.ema_trend === 'increasing' ? (
-                    <span className="text-green-400 flex items-center">
-                      <span className="mr-1">↗</span>
-                      Rising
-                    </span>
-                  ) : tickerData.ema_trend === 'decreasing' ? (
-                    <span className="text-red-400 flex items-center">
-                      <span className="mr-1">↘</span>
-                      Falling
-                    </span>
-                  ) : (
-                    <span className="text-gray-400">N/A</span>
-                  )}
-                </div>
-              </div>
-            </div>
+        <div className="prose-invert text-gray-300 text-sm space-y-3 mb-8">
+          <p>
+            When {asset.symbol} trades <strong>above</strong> the Bull Market Support Band, the band
+            tends to act as support; <strong>inside</strong> the band signals indecision near the
+            longer-term trend; and a weekly close <strong>below</strong> the band is often read as a
+            loss of bullish momentum. The band is a trend reference, not a guaranteed signal.
+          </p>
+          <p>
+            See the <Link href="/what-is-the-bull-market-support-band" className="text-blue-400 hover:underline">BMSB overview</Link>{' '}
+            for how the indicator works, or the{' '}
+            <Link href="/methodology" className="text-blue-400 hover:underline">methodology</Link>{' '}
+            for exactly how this site computes these values.
+          </p>
+        </div>
 
-            {/* Current Price, Position & Band Health */}
-            <div className="mt-4 flex gap-6 text-sm">
-              <div>
-                <span className="text-gray-400">Current Price: </span>
-                <div className="text-white font-mono font-semibold">
-                  ${formatSmallPriceWithSubscript(tickerData.price)}
-                </div>
-              </div>
-              <div>
-                <span className="text-gray-400">Price Position: </span>
-                <div className={`font-semibold ${
-                  tickerData.price_position === 'above_band' ? 'text-green-400' :
-                  tickerData.price_position === 'below_band' ? 'text-red-400' :
-                  'text-yellow-400'
-                }`}>
-                  {tickerData.price_position === 'above_band' ? 'Above Band' :
-                   tickerData.price_position === 'below_band' ? 'Below Band' :
-                   tickerData.price_position === 'in_band' ? 'In Band' : 'N/A'}
-                </div>
-              </div>
-              <div>
-                <span className="text-gray-400">Band Health: </span>
-                <div className={`font-semibold ${
-                  tickerData.band_health === 'healthy' ? 'text-green-400' : 'text-red-400'
-                }`}>
-                  {tickerData.band_health === 'healthy' ? 'Healthy' : 'Weak'}
-                </div>
-              </div>
-            </div>
+        {/* Related assets */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-white mb-2">Other assets</h2>
+          <div className="flex flex-wrap gap-2">
+            {ASSET_PAGES.filter((a) => a.slug !== asset.slug).map((a) => (
+              <Link key={a.slug} href={assetPath(a)} className="px-3 py-1 rounded bg-gray-800 border border-gray-700 text-gray-200 text-sm hover:bg-gray-700">
+                {a.name}
+              </Link>
+            ))}
           </div>
         </div>
 
+        <SiteFooterNav />
       </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, sub, valueClass }: { label: string; value: string; sub?: string; valueClass?: string }) {
+  return (
+    <div className="bg-gray-800/70 border border-gray-700 rounded-lg p-3">
+      <div className="text-gray-400 text-xs mb-1">{label}</div>
+      <div className={`font-mono font-semibold ${valueClass ?? 'text-white'}`}>{value}</div>
+      {sub && <div className="text-xs text-gray-400 mt-1">{sub}</div>}
     </div>
   );
 }

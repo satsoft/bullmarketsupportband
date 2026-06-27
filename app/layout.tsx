@@ -1,6 +1,8 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
+
+const SITE_URL = 'https://www.bullmarketsupportband.com'
 
 export const metadata: Metadata = {
   title: {
@@ -25,11 +27,14 @@ export const metadata: Metadata = {
   authors: [{ name: 'StableScarab', url: 'https://x.com/StableScarab' }],
   creator: 'StableScarab',
   publisher: 'StableScarab',
-  metadataBase: new URL('https://bullmarketsupportband.com'),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://bullmarketsupportband.com',
+    url: SITE_URL,
     title: 'Bull Market Support Band - Real-time Crypto BMSB Analysis',
     description: 'Real-time Bull Market Support Band analysis for top 100 cryptocurrencies with live BMSB health indicators and TradingView charts.',
     siteName: 'Bull Market Support Band',
@@ -61,22 +66,21 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add Google Search Console verification when available
-    // google: 'your-google-site-verification-code'
+    // Set GOOGLE_SITE_VERIFICATION in the environment (Vercel) to emit the GSC tag.
+    google: process.env.GOOGLE_SITE_VERIFICATION,
   },
   category: 'Financial Technology',
   classification: 'Cryptocurrency Analysis Tool',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   other: {
     'application-name': 'BMSB Dashboard',
     'msapplication-TileColor': '#030712',
-    'theme-color': '#030712'
   }
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#030712',
 }
 
 export default function RootLayout({
