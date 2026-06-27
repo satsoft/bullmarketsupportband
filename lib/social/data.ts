@@ -11,6 +11,7 @@ export interface AssetSnapshot {
   name: string;
   rank: number | null;
   handle: string | null;
+  logoUrl: string | null;
   price: number | null;
   change24h: number | null;
   sma: number | null;
@@ -37,7 +38,7 @@ export interface AssetState {
 export async function loadSnapshot(limit = 175): Promise<AssetSnapshot[]> {
   const { data: cryptos, error } = await supabaseAdmin
     .from('cryptocurrencies')
-    .select('id, symbol, name, current_rank, twitter_handle, price_change_percentage_24h, is_stablecoin')
+    .select('id, symbol, name, current_rank, twitter_handle, logo_url, price_change_percentage_24h, is_stablecoin')
     .eq('is_active', true)
     .eq('is_stablecoin', false)
     .order('current_rank', { ascending: true })
@@ -69,6 +70,7 @@ export async function loadSnapshot(limit = 175): Promise<AssetSnapshot[]> {
       name: c.name,
       rank: c.current_rank,
       handle: c.twitter_handle,
+      logoUrl: c.logo_url ?? null,
       price: b.current_price ?? null,
       change24h: c.price_change_percentage_24h ?? null,
       sma: b.sma_20_week,

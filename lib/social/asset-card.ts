@@ -17,7 +17,25 @@ function esc(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 }
 
-function buildHtml(a: AssetSnapshot): string {
+/** Fetch the token logo and inline it as a data URI (no puppeteer network dependency). */
+async function fetchLogoDataUri(url: string | null): Promise<string | null> {
+  if (!url) return null;
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) return null;
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length > 600_000) return null; // sanity cap
+    const mime = res.headers.get('content-type') || 'image/png';
+    return `data:${mime};base64,${buf.toString('base64')}`;
+  } catch {
+    return null;
+  }
+}
+
+function buildHtml(a: AssetSnapshot, logo: string | null): string {
   const pos = a.position;
   const color = pos === 'above_band' ? '#10b981' : pos === 'below_band' ? '#ef4444' : '#f59e0b';
   const posLabel = pos === 'above_band' ? 'ABOVE BAND' : pos === 'below_band' ? 'BELOW BAND' : pos === 'in_band' ? 'IN BAND' : '—';
@@ -33,6 +51,8 @@ function buildHtml(a: AssetSnapshot): string {
   .wrap { padding:46px 54px; height:100%; display:flex; flex-direction:column; justify-content:space-between; position:relative; }
   .accent { position:absolute; left:0; top:0; bottom:0; width:10px; background:${color}; }
   .top { display:flex; justify-content:space-between; align-items:flex-start; }
+  .id { display:flex; align-items:center; gap:26px; }
+  .logo { width:88px; height:88px; border-radius:50%; background:#ffffff10; flex:0 0 auto; }
   .sym { font-size:62px; font-weight:800; color:#fff; letter-spacing:-1px; line-height:1; }
   .name { font-size:24px; color:#9ca3af; margin-top:8px; }
   .badge { background:${color}22; color:${color}; border:2px solid ${color}; border-radius:999px;
@@ -47,7 +67,10 @@ function buildHtml(a: AssetSnapshot): string {
   </style></head><body><div class="wrap">
     <div class="accent"></div>
     <div class="top">
-      <div><div class="sym">$${esc(a.symbol.toUpperCase())}</div><div class="name">${esc(a.name)}</div></div>
+      <div class="id">
+        ${logo ? `<img class="logo" src="${logo}"/>` : ''}
+        <div><div class="sym">$${esc(a.symbol.toUpperCase())}</div><div class="name">${esc(a.name)}</div></div>
+      </div>
       <div class="badge">${posLabel}</div>
     </div>
     <div>
@@ -69,9 +92,10 @@ export async function renderAssetCard(a: AssetSnapshot): Promise<Buffer> {
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
   });
   try {
+    const logo = await fetchLogoDataUri(a.logoUrl);
     const page = await browser.newPage();
     await page.setViewport({ width: 1000, height: 500, deviceScaleFactor: 2 });
-    await page.setContent(buildHtml(a), { waitUntil: 'networkidle0', timeout: 20000 });
+    await page.setContent(buildHtml(a, logo), { waitUntil: 'networkidle0', timeout: 20000 });
     const buf = await page.screenshot({ type: 'png' });
     return buf as Buffer;
   } finally {

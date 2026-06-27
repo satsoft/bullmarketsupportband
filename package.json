@@ -36,6 +36,7 @@
     "twitter-bot:alerts": "tsx scripts/twitter-bot.ts alerts",
     "twitter-bot:daemon": "tsx scripts/twitter-bot-daemon.ts",
     "backfill-handles": "tsx scripts/backfill-twitter-handles.ts",
+    "backfill-logos": "tsx scripts/backfill-logos.ts",
     "social:intraday": "tsx scripts/social-bot.ts intraday",
     "social:daily": "tsx scripts/social-bot.ts daily",
     "social:weekly": "tsx scripts/social-bot.ts weekly"
