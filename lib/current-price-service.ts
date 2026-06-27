@@ -302,7 +302,7 @@ export class CurrentPriceService {
           // Check if we already have this cryptocurrency
           const { data: existingCrypto } = await supabaseAdmin
             .from('cryptocurrencies')
-            .select('id, current_rank')
+            .select('id, current_rank, is_stablecoin')
             .eq('coingecko_id', crypto.id)
             .single();
 
@@ -313,12 +313,14 @@ export class CurrentPriceService {
           });
 
           if (existingCrypto) {
-            // Update existing cryptocurrency with 24h change data
+            // Update existing cryptocurrency with 24h change data.
+            // Never downgrade is_stablecoin: the heuristic can promote false->true,
+            // but a manual DB flag (true) is the source of truth and is preserved.
             const { error: updateError } = await supabaseAdmin
               .from('cryptocurrencies')
               .update({
                 current_rank: crypto.market_cap_rank,
-                is_stablecoin: isStablecoinFlag,
+                is_stablecoin: existingCrypto.is_stablecoin || isStablecoinFlag,
                 price_change_percentage_24h: crypto.price_change_percentage_24h || 0,
                 price_change_24h: crypto.current_price * ((crypto.price_change_percentage_24h || 0) / 100),
                 price_updated_at: new Date().toISOString(),

@@ -79,7 +79,7 @@ export const ExclusionTooltip: React.FC<ExclusionTooltipProps> = ({ children, ex
   // Simple 3-category system
   const simplifiedCategories = {
     'insufficient_data': 'Insufficient Market Data (< 21 weeks)',
-    'stablecoins': 'Stablecoins', 
+    'stablecoins': 'Stablecoins/RWAs',
     'derivatives': 'Wrapped/Bridged/Staking Tokens'
   };
 

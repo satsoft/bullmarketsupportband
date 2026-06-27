@@ -91,19 +91,26 @@ export class CryptocurrencyService {
             categories: [] // Will be updated later when we have more API quota
           });
 
-          // Upsert cryptocurrency data
+          // Upsert cryptocurrency data.
+          // Only write is_stablecoin when the heuristic detects one. Omitting it on
+          // conflict preserves an existing (possibly manually-set) flag rather than
+          // overwriting it to false; new rows fall back to the column default (false).
+          const cryptoData: Record<string, unknown> = {
+            coingecko_id: crypto.id,
+            symbol: crypto.symbol.toUpperCase(),
+            name: crypto.name,
+            current_rank: crypto.market_cap_rank,
+            is_active: true,
+            categories: [], // Will be updated later
+            updated_at: new Date().toISOString()
+          };
+          if (isStablecoinFlag) {
+            cryptoData.is_stablecoin = true;
+          }
+
           const { error } = await supabaseAdmin
             .from('cryptocurrencies')
-            .upsert({
-              coingecko_id: crypto.id,
-              symbol: crypto.symbol.toUpperCase(),
-              name: crypto.name,
-              current_rank: crypto.market_cap_rank,
-              is_active: true,
-              is_stablecoin: isStablecoinFlag,
-              categories: [], // Will be updated later
-              updated_at: new Date().toISOString()
-            }, {
+            .upsert(cryptoData, {
               onConflict: 'coingecko_id'
             });
 
