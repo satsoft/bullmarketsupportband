@@ -76,6 +76,7 @@ CREATE TABLE bmsb_calculations (
     sma_trend TEXT CHECK (sma_trend IN ('increasing', 'decreasing', 'flat')),
     ema_trend TEXT CHECK (ema_trend IN ('increasing', 'decreasing', 'flat')),
     band_health TEXT CHECK (band_health IN ('healthy', 'mixed', 'weak', 'stablecoin')),
+    previous_health TEXT CHECK (previous_health IN ('healthy', 'mixed', 'weak', 'stablecoin')),
     is_applicable BOOLEAN DEFAULT true,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(cryptocurrency_id, calculation_date)
