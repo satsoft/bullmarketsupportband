@@ -564,10 +564,13 @@ export const Dashboard: React.FC = () => {
         onFavoriteClick={handleFavoriteClick}
       />
 
-      {/* Main Content - Responsive height */}
-      <div className={`${hasFavorites 
-        ? 'h-[calc(100vh-230px)] md:h-[calc(100vh-132px)]' 
-        : 'h-[calc(100vh-190px)] md:h-[calc(100vh-92px)]'
+      {/* Main Content - Responsive height.
+          Mobile (<md) uses min-h so the single-column list grows to fit all rows and the
+          page scrolls naturally (the list isn't internally scrollable on mobile); md+ keeps
+          a fixed height so the multi-column layout scrolls internally. */}
+      <div className={`${hasFavorites
+        ? 'min-h-[calc(100vh-230px)] md:min-h-0 md:h-[calc(100vh-132px)]'
+        : 'min-h-[calc(100vh-190px)] md:min-h-0 md:h-[calc(100vh-92px)]'
       }`}>
         {/* Ticker List - Full Width */}
         <div className="h-full bg-gray-950">
