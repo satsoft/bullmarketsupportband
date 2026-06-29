@@ -7,7 +7,7 @@
   - Bull Market Support Band branding
   - Key metrics preview
   - Professional crypto/financial theme
-  - StableScarab attribution
+  - SeanKelleyX attribution
 
 ## Suggested Design Elements:
 - BMSB logo/icon
@@ -15,7 +15,7 @@
 - "Real-time Crypto BMSB Analysis" headline
 - Key stats: "Top 100 Cryptocurrencies", "Live Updates"
 - Modern dark theme matching dashboard
-- @StableScarab credit
+- @SeanKelleyX credit
 
 ## File Location:
 Place the final image at: `/public/og-image.png`

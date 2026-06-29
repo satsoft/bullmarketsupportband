@@ -290,12 +290,12 @@ export const Dashboard: React.FC = () => {
                   </a>
                   {' • BUILT BY '}
                   <a 
-                    href="https://x.com/StableScarab" 
+                    href="https://x.com/SeanKelleyX" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-300 transition-colors underline"
                   >
-                    STABLESCARAB
+                    SEANKELLEYX
                   </a>
                 </span>
               </div>
@@ -471,16 +471,16 @@ export const Dashboard: React.FC = () => {
                 </a>
               </div>
               
-              {/* Line 5: BUILT BY STABLESCARAB */}
+              {/* Line 5: BUILT BY SEANKELLEYX */}
               <div className="text-gray-500 text-xs">
                 BUILT BY{' '}
                 <a 
-                  href="https://x.com/StableScarab" 
+                  href="https://x.com/SeanKelleyX" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-400 underline"
                 >
-                  STABLESCARAB
+                  SEANKELLEYX
                 </a>
               </div>
               

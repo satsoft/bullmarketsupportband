@@ -26,7 +26,7 @@ const jsonLd = {
       '@id': `${SITE}/#org`,
       name: 'Bull Market Support Band',
       url: SITE,
-      sameAs: ['https://x.com/StableScarab'],
+      sameAs: ['https://x.com/SeanKelleyX'],
     },
     {
       '@type': 'WebApplication',
@@ -37,7 +37,7 @@ const jsonLd = {
       applicationCategory: 'FinanceApplication',
       operatingSystem: 'Web Browser',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      author: { '@type': 'Person', name: 'StableScarab', url: 'https://x.com/StableScarab' },
+      author: { '@type': 'Person', name: 'SeanKelleyX', url: 'https://x.com/SeanKelleyX' },
       featureList: [
         'Real-time cryptocurrency price tracking',
         'Bull Market Support Band calculations',

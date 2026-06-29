@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     'market support',
     'trading signals'
   ],
-  authors: [{ name: 'StableScarab', url: 'https://x.com/StableScarab' }],
-  creator: 'StableScarab',
-  publisher: 'StableScarab',
+  authors: [{ name: 'SeanKelleyX', url: 'https://x.com/SeanKelleyX' }],
+  creator: 'SeanKelleyX',
+  publisher: 'SeanKelleyX',
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: '/',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Bull Market Support Band - Real-time Crypto BMSB Analysis',
     description: 'Real-time Bull Market Support Band analysis for top 100 cryptocurrencies with live BMSB health indicators.',
-    creator: '@StableScarab',
+    creator: '@SeanKelleyX',
     images: ['/og-image.png']
   },
   robots: {
